@@ -13,6 +13,7 @@
 package org.activiti.editor.language.json.converter;
 
 import java.util.Map;
+import java.util.UUID;
 
 import org.activiti.bpmn.model.BaseElement;
 import org.activiti.bpmn.model.ErrorEventDefinition;
@@ -24,10 +25,12 @@ import org.activiti.bpmn.model.MessageEventDefinition;
 import org.activiti.bpmn.model.SignalEventDefinition;
 import org.activiti.bpmn.model.StartEvent;
 import org.activiti.bpmn.model.TimerEventDefinition;
+import org.activiti.bpmn.model.UserTask;
 import org.activiti.editor.language.json.model.ModelInfo;
 import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
@@ -125,6 +128,21 @@ public class StartEventJsonConverter extends BaseBpmnJsonConverter implements Fo
     } else if (STENCIL_EVENT_START_SIGNAL.equals(stencilId)) {
       convertJsonToSignalDefinition(elementNode, startEvent);
     }
+    ObjectNode elementSlaNode=objectMapper.createObjectNode();
+    elementSlaNode.put("id", UUID.randomUUID().toString());
+    elementSlaNode.put("duration", "5");
+    elementSlaNode.put("durationType", 0);
+    elementSlaNode.put("title", "测试SLA");
+    
+    ObjectNode elementSlaNode1=objectMapper.createObjectNode();
+    elementSlaNode1.put("id", UUID.randomUUID().toString());
+    elementSlaNode1.put("duration", "5");
+    elementSlaNode1.put("durationType", 0);
+    elementSlaNode1.put("title", "测试SLA");
+    ArrayNode arrayNode= objectMapper.createArrayNode();
+    arrayNode.add(elementSlaNode1);
+    arrayNode.add(elementSlaNode);
+    addExtensionElement("sla",arrayNode.toString(),startEvent);
     return startEvent;
   }
 

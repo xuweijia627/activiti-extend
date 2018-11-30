@@ -15,8 +15,11 @@ package org.activiti.editor.language.json.converter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.activiti.bpmn.model.BaseElement;
+import org.activiti.bpmn.model.CustomProperty;
+import org.activiti.bpmn.model.ExtensionAttribute;
 import org.activiti.bpmn.model.ExtensionElement;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
@@ -364,6 +367,37 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter implements Form
       }
     }
     convertJsonToFormProperties(elementNode, task);
+    // 2018-11-28 add by xuWeiJia 读取节点sla配置 并存入CustomProperties中
+    String slanode=getPropertyValueAsString("slanode", elementNode);
+    /*CustomProperty customProperty=new CustomProperty();
+    customProperty.setName("slaNode");
+    customProperty.setSimpleValue(slanode);
+    customProperty.setId(UUID.randomUUID().toString());
+    ExtensionAttribute extensionAttribute=new ExtensionAttribute();
+    extensionAttribute.setName("idqq");
+    extensionAttribute.setValue("slaNode_"+UUID.randomUUID().toString());*/
+    //customProperty.addAttribute(extensionAttribute);
+    /*List<CustomProperty> customProperties=new ArrayList<CustomProperty>();
+    customProperties.add(customProperty);
+    task.setCustomProperties(customProperties);
+    task.addAttribute(extensionAttribute);*/
+    ObjectNode elementSlaNode=objectMapper.createObjectNode();
+    elementSlaNode.put("id", UUID.randomUUID().toString());
+    elementSlaNode.put("duration", slanode);
+    elementSlaNode.put("durationType", 0);
+    elementSlaNode.put("title", "测试SLATTQQ");
+    
+    ObjectNode elementSlaNode1=objectMapper.createObjectNode();
+    elementSlaNode1.put("id", UUID.randomUUID().toString());
+    elementSlaNode1.put("duration", slanode);
+    elementSlaNode1.put("durationType", 1);
+    elementSlaNode1.put("title", "测试SLA111TTQQ");
+    
+    ArrayNode arrayNode= objectMapper.createArrayNode();
+    arrayNode.add(elementSlaNode1);
+    arrayNode.add(elementSlaNode);
+    addExtensionElement("slaNode",arrayNode.toString(),task);
+    // add end
     return task;
   }
 

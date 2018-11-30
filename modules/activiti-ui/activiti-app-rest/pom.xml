@@ -41,7 +41,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.activiti</groupId>
-			<artifactId>activiti-json-converter</artifactId>
+			<artifactId>activiti-json-converter-extension1</artifactId>
+			<version>6.0.0</version>
 		</dependency>
         <dependency>
             <groupId>org.activiti</groupId>

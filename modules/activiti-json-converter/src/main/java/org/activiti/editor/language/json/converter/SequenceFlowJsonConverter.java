@@ -155,6 +155,17 @@ public class SequenceFlowJsonConverter extends BaseBpmnJsonConverter {
 
       } else if (conditionNode.get("expression") != null) {
         JsonNode expressionNode = conditionNode.get("expression");
+        // 2018-11-30 add by xuWeiJia 给用户展示的条件表达式存入扩展属性
+        JsonNode expressionDisplayNode= conditionNode.get(EXPRESSION_DISPLAY);
+        if(expressionDisplayNode!=null) {
+        	String expressionDisplay=expressionDisplayNode.asText();
+        	addExtensionElement("expressionDisplay",expressionDisplay,flow);
+        	JsonNode conditionNameNode = getProperty(PROPERTY_NAME, elementNode);
+            if(conditionNameNode!=null){
+                addExtensionElement(PROPERTY_NAME,conditionNameNode.asText(),flow);
+            }
+        }
+        // end add
         if (expressionNode.get("type") != null) {
           String expressionType = expressionNode.get("type").asText();
 

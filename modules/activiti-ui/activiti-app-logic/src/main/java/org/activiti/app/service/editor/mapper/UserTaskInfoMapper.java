@@ -14,7 +14,9 @@ package org.activiti.app.service.editor.mapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import org.activiti.bpmn.model.ExtensionElement;
 import org.activiti.bpmn.model.FormProperty;
 import org.activiti.bpmn.model.UserTask;
 import org.activiti.editor.language.json.converter.util.CollectionUtils;
@@ -28,8 +30,18 @@ public class UserTaskInfoMapper extends AbstractInfoMapper {
 		createPropertyNode("Candidate users", userTask.getCandidateUsers());
 		createPropertyNode("Candidate groups", userTask.getCandidateGroups());
 		createPropertyNode("Due date", userTask.getDueDate());
-		createPropertyNode("Form key", userTask.getFormKey());
+		//createPropertyNode("Form key", userTask.getFormKey()); 用customCreatePropertyNode替换
 		createPropertyNode("Priority", userTask.getPriority());
+		// 2018-11-28 add by xuWeiJia 将sla配置组装成ObjectNode
+		customCreatePropertyNode("Form key","formString", userTask.getFormKey());
+		Map<String, List<ExtensionElement>> extensionElementMap= userTask.getExtensionElements();
+	    List<ExtensionElement> extensionElements=(List<ExtensionElement>) extensionElementMap.get("slaNode");
+	    if(CollectionUtils.isNotEmpty(extensionElements)) {
+	    	for(ExtensionElement ele : extensionElements) {
+		    	createPropertyNode("slaNode", ele.getElementText());
+		    }
+	    }
+		// add end
 		if (CollectionUtils.isNotEmpty(userTask.getFormProperties())) {
 		    List<String> formPropertyValues = new ArrayList<String>();
 		    for (FormProperty formProperty : userTask.getFormProperties()) {

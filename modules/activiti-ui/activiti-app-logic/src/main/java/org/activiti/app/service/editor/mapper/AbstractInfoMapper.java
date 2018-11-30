@@ -12,6 +12,7 @@
  */
 package org.activiti.app.service.editor.mapper;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import org.activiti.bpmn.model.MultiInstanceLoopCharacteristics;
 import org.activiti.editor.language.json.converter.util.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -164,4 +166,55 @@ public abstract class AbstractInfoMapper implements InfoMapper {
 			propertiesNode.add(propertyNode);
 		}
 	}
+	/**
+	 * 2018-11-29 add by xuWeiJia
+	 * @param name
+	 * @param value
+	 */
+	public static final String DOUBLE_QUOTES="\"\"";
+	public static final String QUOTES="\"";
+	public static final String BLANK="";
+	public static final String FORM_ID="id";
+	public static final String FORM_NAME="name";
+	protected void customCreatePropertyNode(String name,String type, String value) {
+        if (StringUtils.isNotEmpty(value)) {
+            ObjectNode propertyNode = objectMapper.createObjectNode();
+            propertyNode.put("name", name);
+            propertyNode.put("type", type);
+            propertyNode.put("value", this.parseObjectNode(value));
+            propertiesNode.add(propertyNode);
+        }
+    }
+	
+	protected ObjectNode parseObjectNode(String nodeString){
+        ObjectNode formKeyDefinitionNode = objectMapper.createObjectNode();
+        if(DOUBLE_QUOTES.equals(nodeString)){
+            return formKeyDefinitionNode;
+        }
+        if(nodeString.startsWith(QUOTES) && nodeString.endsWith(QUOTES)){
+            nodeString=nodeString.substring(1,nodeString.length()-1)
+                    .replace("\\",BLANK);
+            if(DOUBLE_QUOTES.equals(nodeString)){
+                return formKeyDefinitionNode;
+            }
+        }
+        ObjectNode jsonObject;
+		try {
+			jsonObject = (ObjectNode) objectMapper.readTree(nodeString);
+	        if(StringUtils.isNotBlank(jsonObject.get(FORM_ID).textValue())){
+	            formKeyDefinitionNode.put(FORM_ID,jsonObject.get(FORM_ID).textValue());
+	        }
+	        if(StringUtils.isNotBlank(jsonObject.get(FORM_NAME).textValue())){
+	            formKeyDefinitionNode.put(FORM_NAME,jsonObject.get(FORM_NAME).textValue());
+	        }
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        return formKeyDefinitionNode;
+    }
+	// add end
 }

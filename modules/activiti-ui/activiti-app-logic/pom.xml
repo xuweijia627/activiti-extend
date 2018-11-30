@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>activiti-app-logic</artifactId>
+	<artifactId>activiti-app-logic-extension1</artifactId>
 	<parent>
 		<groupId>org.activiti</groupId>
     	<artifactId>activiti-ui-root</artifactId>
@@ -49,7 +49,8 @@
         </dependency>
         <dependency>
         	<groupId>org.activiti</groupId>
-        	<artifactId>activiti-json-converter</artifactId>
+        	<artifactId>activiti-json-converter-extension1</artifactId>
+        	<version>6.0.0</version>
         </dependency>
         <dependency>
         	<groupId>org.activiti</groupId>
@@ -253,6 +254,19 @@
        </dependency>
 
 	</dependencies>
+	
+	<distributionManagement>
+        <repository>
+            <id>maven-releases</id>
+            <name>maven-releases</name>
+            <url>http://39.108.142.41:8888/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>maven-snapshots</id>
+            <name>maven-snapshots</name>
+            <url>http://39.108.142.41:8888/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 	<!-- BUILD -->
 	<build>
