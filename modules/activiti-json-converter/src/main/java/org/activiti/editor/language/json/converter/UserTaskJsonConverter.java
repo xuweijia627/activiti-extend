@@ -367,36 +367,12 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter implements Form
       }
     }
     convertJsonToFormProperties(elementNode, task);
-    // 2018-11-28 add by xuWeiJia 读取节点sla配置 并存入CustomProperties中
-    String slanode=getPropertyValueAsString("slanode", elementNode);
-    /*CustomProperty customProperty=new CustomProperty();
-    customProperty.setName("slaNode");
-    customProperty.setSimpleValue(slanode);
-    customProperty.setId(UUID.randomUUID().toString());
-    ExtensionAttribute extensionAttribute=new ExtensionAttribute();
-    extensionAttribute.setName("idqq");
-    extensionAttribute.setValue("slaNode_"+UUID.randomUUID().toString());*/
-    //customProperty.addAttribute(extensionAttribute);
-    /*List<CustomProperty> customProperties=new ArrayList<CustomProperty>();
-    customProperties.add(customProperty);
-    task.setCustomProperties(customProperties);
-    task.addAttribute(extensionAttribute);*/
-    ObjectNode elementSlaNode=objectMapper.createObjectNode();
-    elementSlaNode.put("id", UUID.randomUUID().toString());
-    elementSlaNode.put("duration", slanode);
-    elementSlaNode.put("durationType", 0);
-    elementSlaNode.put("title", "测试SLATTQQ");
-    
-    ObjectNode elementSlaNode1=objectMapper.createObjectNode();
-    elementSlaNode1.put("id", UUID.randomUUID().toString());
-    elementSlaNode1.put("duration", slanode);
-    elementSlaNode1.put("durationType", 1);
-    elementSlaNode1.put("title", "测试SLA111TTQQ");
-    
-    ArrayNode arrayNode= objectMapper.createArrayNode();
-    arrayNode.add(elementSlaNode1);
-    arrayNode.add(elementSlaNode);
-    addExtensionElement("slaNode",arrayNode.toString(),task);
+    // 2018-11-28 add by xuWeiJia 读取节点sla配置
+    JsonNode slaNode = getProperty("slanode", elementNode);
+    if(slaNode instanceof ArrayNode){
+        ArrayNode slaNodeArray= (ArrayNode) slaNode;
+        addExtensionElement(SLA_NODE,slaNodeArray.toString(),task);
+    }
     // add end
     return task;
   }

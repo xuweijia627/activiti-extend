@@ -244,4 +244,9 @@ public interface StencilConstants {
   
   // add by xuWeiJia 2018-11-30
   final String EXPRESSION_DISPLAY = "expressionDisplay";
+  final String SLA = "sla";
+  final String DATA = "data";
+  final String SLA_NODE = "slaNode";
+  final String DEFAULT_SLA = "defaultSla";
+  // add end
 }

@@ -34,13 +34,13 @@ public class UserTaskInfoMapper extends AbstractInfoMapper {
 		createPropertyNode("Priority", userTask.getPriority());
 		// 2018-11-28 add by xuWeiJia 将sla配置组装成ObjectNode
 		customCreatePropertyNode("Form key","formString", userTask.getFormKey());
-		Map<String, List<ExtensionElement>> extensionElementMap= userTask.getExtensionElements();
+		/*Map<String, List<ExtensionElement>> extensionElementMap= userTask.getExtensionElements();
 	    List<ExtensionElement> extensionElements=(List<ExtensionElement>) extensionElementMap.get("slaNode");
 	    if(CollectionUtils.isNotEmpty(extensionElements)) {
 	    	for(ExtensionElement ele : extensionElements) {
 		    	createPropertyNode("slaNode", ele.getElementText());
 		    }
-	    }
+	    }*/
 		// add end
 		if (CollectionUtils.isNotEmpty(userTask.getFormProperties())) {
 		    List<String> formPropertyValues = new ArrayList<String>();

@@ -12,6 +12,7 @@
  */
 package org.activiti.editor.language.json.converter;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
 
@@ -19,6 +20,7 @@ import org.activiti.bpmn.model.BaseElement;
 import org.activiti.bpmn.model.ErrorEventDefinition;
 import org.activiti.bpmn.model.Event;
 import org.activiti.bpmn.model.EventDefinition;
+import org.activiti.bpmn.model.ExtensionAttribute;
 import org.activiti.bpmn.model.ExtensionElement;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.MessageEventDefinition;
@@ -32,6 +34,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 
 /**
  * @author Tijs Rademakers
@@ -128,21 +131,29 @@ public class StartEventJsonConverter extends BaseBpmnJsonConverter implements Fo
     } else if (STENCIL_EVENT_START_SIGNAL.equals(stencilId)) {
       convertJsonToSignalDefinition(elementNode, startEvent);
     }
-    ObjectNode elementSlaNode=objectMapper.createObjectNode();
-    elementSlaNode.put("id", UUID.randomUUID().toString());
-    elementSlaNode.put("duration", "5");
-    elementSlaNode.put("durationType", 0);
-    elementSlaNode.put("title", "测试SLA");
-    
-    ObjectNode elementSlaNode1=objectMapper.createObjectNode();
-    elementSlaNode1.put("id", UUID.randomUUID().toString());
-    elementSlaNode1.put("duration", "5");
-    elementSlaNode1.put("durationType", 0);
-    elementSlaNode1.put("title", "测试SLA");
-    ArrayNode arrayNode= objectMapper.createArrayNode();
-    arrayNode.add(elementSlaNode1);
-    arrayNode.add(elementSlaNode);
-    addExtensionElement("sla",arrayNode.toString(),startEvent);
+    // add by xuWeiJia
+    JsonNode sla = modelNode.get(SLA);
+    if(sla!=null) {
+    	ArrayNode slaData= (ArrayNode) sla.get(DATA);
+    	if(slaData!=null && slaData.size()>0) {
+    		JsonNode defaultSla = getProperty(SLA, modelNode);
+            String id="";
+            if(defaultSla instanceof TextNode){
+                try {
+                    JsonNode jsonNode = objectMapper.readTree(defaultSla.asText());
+                    if(jsonNode!=null){
+                        id=jsonNode.get(EDITOR_STENCIL_ID).asText();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else if(defaultSla instanceof JsonNode){
+                id=defaultSla.get(EDITOR_STENCIL_ID).asText();
+            }
+            addExtensionElement(SLA,slaData.toString(),id,startEvent);
+    	}
+    }
+    // add end
     return startEvent;
   }
 
@@ -154,6 +165,22 @@ public class StartEventJsonConverter extends BaseBpmnJsonConverter implements Fo
     extensionElement.setElementText(elementText);
     event.addExtensionElement(extensionElement);
   }
+  
+  // add by xuWeiJia
+  protected void addExtensionElement(String name, String elementText,String id, Event event) {
+      ExtensionElement extensionElement = new ExtensionElement();
+      extensionElement.setNamespace(NAMESPACE);
+      extensionElement.setNamespacePrefix("modeler");
+      extensionElement.setName(name);
+      extensionElement.setElementText(elementText);
+      ExtensionAttribute attribute=new ExtensionAttribute();
+      attribute.setName(DEFAULT_SLA);
+      attribute.setValue(id);
+      attribute.setNamespace(NAMESPACE);
+      extensionElement.addAttribute(attribute);
+      event.addExtensionElement(extensionElement);
+  }
+  // add end
 
   @Override
   public void setFormMap(Map<String, String> formMap) {
