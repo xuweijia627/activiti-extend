@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <name>Activiti - BPMN Converter</name>
-  <artifactId>activiti-bpmn-converter</artifactId>
+  <artifactId>activiti-bpmn-converter-extension5</artifactId>
 
   <parent>
     <groupId>org.activiti</groupId>
@@ -135,6 +135,18 @@
       <scope>provided</scope>
     </dependency>
   </dependencies>
+  <distributionManagement>
+        <repository>
+            <id>maven-releases</id>
+            <name>maven-releases</name>
+            <url>http://39.108.142.41:8888/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>maven-snapshots</id>
+            <name>maven-snapshots</name>
+            <url>http://39.108.142.41:8888/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
   
   <profiles>
     <profile>

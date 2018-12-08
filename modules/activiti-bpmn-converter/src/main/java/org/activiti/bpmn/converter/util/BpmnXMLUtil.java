@@ -167,7 +167,13 @@ public class BpmnXMLUtil implements BpmnXMLConstants {
       xtr.next();
       if (xtr.isCharacters() || XMLStreamReader.CDATA == xtr.getEventType()) {
         if (StringUtils.isNotEmpty(xtr.getText().trim())) {
-          extensionElement.setElementText(xtr.getText().trim());
+          // add by xuWeiJia slaNode是一段长json数据,xtr会分块读取
+          if(StringUtils.isNotBlank(extensionElement.getElementText())){
+              extensionElement.setElementText(extensionElement.getElementText()+xtr.getText().trim());
+          }else{
+              extensionElement.setElementText(xtr.getText().trim());
+          }
+          // add end
         }
       } else if (xtr.isStartElement()) {
         ExtensionElement childExtensionElement = parseExtensionElement(xtr);

@@ -37,11 +37,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.activiti</groupId>
-			<artifactId>activiti-bpmn-converter</artifactId>
+			<artifactId>activiti-bpmn-converter-extension5</artifactId>
+			<version>6.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.activiti</groupId>
-			<artifactId>activiti-json-converter-extension3</artifactId>
+			<artifactId>activiti-json-converter-extension5</artifactId>
 			<version>6.0.0</version>
 		</dependency>
         <dependency>

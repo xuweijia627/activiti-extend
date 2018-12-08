@@ -146,12 +146,6 @@ public class SequenceFlowJsonConverter extends BaseBpmnJsonConverter {
         }
       }
     }
-    // add by xuWeiJia
-    JsonNode conditionNameNode = getProperty(PROPERTY_NAME, elementNode);
-    if(conditionNameNode!=null && StringUtils.isNotBlank(conditionNameNode.asText())){
-        addExtensionElement(PROPERTY_NAME,conditionNameNode.asText(),flow);
-    }
-    // end add
 
     JsonNode conditionNode = getProperty(PROPERTY_SEQUENCEFLOW_CONDITION, elementNode);
     if (conditionNode != null) {

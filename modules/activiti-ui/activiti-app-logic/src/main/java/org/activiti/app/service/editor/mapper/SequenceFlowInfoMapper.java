@@ -31,20 +31,18 @@ public class SequenceFlowInfoMapper extends AbstractInfoMapper {
 			// 2018-11-28 add by xuWeiJia 查看详情的时候把条件表达式 和 名称展示出来
 		    Map<String, List<ExtensionElement>> extensionElementMap= sequenceFlow.getExtensionElements();
 		    List<ExtensionElement> expressionDisplayElements=(List<ExtensionElement>) extensionElementMap.get(StencilConstants.EXPRESSION_DISPLAY);
-		    List<ExtensionElement> nameElements=(List<ExtensionElement>) extensionElementMap.get(StencilConstants.PROPERTY_NAME);
 		    if(CollectionUtils.isNotEmpty(expressionDisplayElements)) {
 		    	for(ExtensionElement ele : expressionDisplayElements) {
 			    	createPropertyNode("Condition expression", ele.getElementText());
 			    }
 		    }
-		    if(CollectionUtils.isNotEmpty(nameElements)) {
-		    	for(ExtensionElement ele : nameElements) {
-			    	createPropertyNode(StencilConstants.PROPERTY_NAME, ele.getElementText());
-			    }
-		    }
 		    // add end
 		}
-		
+		// 2018-11-28 add by xuWeiJia
+		if (StringUtils.isNotEmpty(sequenceFlow.getName())) {
+			createPropertyNode(StencilConstants.PROPERTY_NAME, sequenceFlow.getName());
+		}
+		// add end
 		createListenerPropertyNodes("Execution listeners", sequenceFlow.getExecutionListeners());
 	}
 }
