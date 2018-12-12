@@ -35,7 +35,9 @@ public class ParsingElContext extends ELContext {
   }
 
   public FunctionMapper getFunctionMapper() {
-    return null;
+	  // add by xuWeiJia
+	  return new ActivitiFunctionMapper();
+    //return null;
   }
 
   public VariableMapper getVariableMapper() {

@@ -22,6 +22,10 @@ public class Model extends AbstractModel {
 
 	@Column(name="thumbnail")
 	private byte[] thumbnail;
+	// add by xuWeiJia
+	@Column(name = "tenant_id")
+    private String tenantId;
+	// add end
 	
 	public Model() {
 		super();
@@ -34,5 +38,15 @@ public class Model extends AbstractModel {
 	public void setThumbnail(byte[] thumbnail) {
 		this.thumbnail = thumbnail;
 	}
+
+	public String getTenantId() {
+		return tenantId;
+	}
+
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
+	}
+	
+	
 	
 }

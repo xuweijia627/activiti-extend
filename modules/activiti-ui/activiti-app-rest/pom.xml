@@ -23,7 +23,8 @@
         </dependency>
         <dependency>
             <groupId>org.activiti</groupId>
-            <artifactId>activiti-app-logic</artifactId>
+            <artifactId>activiti-app-logic-extension6</artifactId>
+            <version>6.0.0</version>
         </dependency>
 
 		<!-- Activiti -->

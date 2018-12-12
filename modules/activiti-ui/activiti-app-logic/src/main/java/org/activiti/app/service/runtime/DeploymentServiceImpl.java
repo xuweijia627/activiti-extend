@@ -88,7 +88,8 @@ public class DeploymentServiceImpl implements DeploymentService {
     if (CollectionUtils.isNotEmpty(appDefinition.getModels())) {
       DeploymentBuilder deploymentBuilder = repositoryService.createDeployment()
           .name(appDefinitionModel.getName())
-          .key(appDefinitionModel.getKey());
+          .key(appDefinitionModel.getKey())
+          .tenantId(appDefinitionModel.getTenantId());
       
       Map<String, Model> formMap = new HashMap<String, Model>();
       Map<String, Model> decisionTableMap = new HashMap<String, Model>();

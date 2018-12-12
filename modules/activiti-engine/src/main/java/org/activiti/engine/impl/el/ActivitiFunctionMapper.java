@@ -17,6 +17,8 @@ import java.lang.reflect.Method;
 
 import javax.el.FunctionMapper;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * Default implementation of a {@link FunctionMapper}.
  * 
@@ -27,7 +29,15 @@ import javax.el.FunctionMapper;
 public class ActivitiFunctionMapper extends FunctionMapper {
 
   public Method resolveFunction(String prefix, String localName) {
-    return null;
+	  	// add by xuWeiJia
+		try {
+			return StringUtils.class.getMethod("contains",CharSequence.class,CharSequence.class);
+		} catch (NoSuchMethodException | SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// add end
+		return null;
   }
 
 }
