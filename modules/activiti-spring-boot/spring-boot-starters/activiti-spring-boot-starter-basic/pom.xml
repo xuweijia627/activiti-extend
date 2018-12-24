@@ -9,7 +9,7 @@
 		<version>6.0.0</version>
 	</parent>
 
-	<artifactId>activiti-spring-boot-starter-basic</artifactId>
+	<artifactId>activiti-spring-boot-starter-basic-extension2</artifactId>
 	<!-- <properties> <spring.framework.version>4.1.4.RELEASE</spring.framework.version> 
 		</properties> -->
 
@@ -24,7 +24,8 @@
 		<!-- common -->
 		<dependency>
 			<groupId>org.activiti</groupId>
-			<artifactId>activiti-engine</artifactId>
+			<artifactId>activiti-engine-extension2</artifactId>
+			<version>6.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.activiti</groupId>
@@ -150,4 +151,17 @@
 			</build>
 		</profile>
 	</profiles>
+	
+	<distributionManagement>
+        <repository>
+            <id>maven-releases</id>
+            <name>maven-releases</name>
+            <url>http://39.108.142.41:8888/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>maven-snapshots</id>
+            <name>maven-snapshots</name>
+            <url>http://39.108.142.41:8888/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>

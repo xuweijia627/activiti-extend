@@ -14,6 +14,8 @@
 package org.activiti.engine.impl.el;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.el.FunctionMapper;
 
@@ -27,17 +29,17 @@ import org.apache.commons.lang3.StringUtils;
  * @author Joram Barrez
  */
 public class ActivitiFunctionMapper extends FunctionMapper {
-
+	
   public Method resolveFunction(String prefix, String localName) {
-	  	// add by xuWeiJia
-		try {
-			return StringUtils.class.getMethod("contains",CharSequence.class,CharSequence.class);
+	  Map<String, Method> map = new HashMap<String, Method>();
+	  try {
+		  	map.put("fn:contains",StringUtils.class.getMethod("contains",CharSequence.class,CharSequence.class));
+		  	map.put("fn:isBlank",StringUtils.class.getMethod("isBlank",CharSequence.class));
+			map.put("fn:now",ExpressionFunctionUtils.class.getMethod("now",long.class,CharSequence.class));
 		} catch (NoSuchMethodException | SecurityException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// add end
-		return null;
+	  return map.get(prefix + ":" + localName);
   }
 
 }
