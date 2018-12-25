@@ -68,6 +68,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -195,15 +196,17 @@ public class RuntimeDisplayJsonClientResource {
   }
 
   @RequestMapping(value = "/rest/process-definitions/{processDefinitionId}/model-json", method = RequestMethod.GET, produces = "application/json")
-  public JsonNode getModelJSONForProcessDefinition(@PathVariable String processDefinitionId) {
+  public JSONObject getModelJSONForProcessDefinition(@PathVariable String processDefinitionId) {
 
     BpmnModel pojoModel = repositoryService.getBpmnModel(processDefinitionId);
 
     if (pojoModel == null || pojoModel.getLocationMap().isEmpty()) {
       throw new InternalServerErrorException("Process definition could not be found with id " + processDefinitionId);
     }
-
-    return processProcessElements(pojoModel, null, null);
+    ObjectNode objectNode=processProcessElements(pojoModel, null, null);
+    // add by xuWeiJia 2018-12-24
+    return JSONObject.parseObject(objectNode.toString());
+    //return objectNode;
   }
 
   @RequestMapping(value = "/rest/process-instances/history/{processInstanceId}/model-json", method = RequestMethod.GET, produces = "application/json")

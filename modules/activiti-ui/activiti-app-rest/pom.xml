@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>activiti-app-rest</artifactId>
+	<artifactId>activiti-app-rest-extension1</artifactId>
 	<parent>
 		<groupId>org.activiti</groupId>
     	<artifactId>activiti-ui-root</artifactId>
@@ -246,9 +246,27 @@
         	<groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
        </dependency>
+       
+       <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.47</version>
+        </dependency>
 	   
 	</dependencies>
 
+<distributionManagement>
+        <repository>
+            <id>maven-releases</id>
+            <name>maven-releases</name>
+            <url>http://39.108.142.41:8888/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>maven-snapshots</id>
+            <name>maven-snapshots</name>
+            <url>http://39.108.142.41:8888/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 	<!-- BUILD -->
 	<build>
 	
