@@ -13,6 +13,7 @@
 package org.activiti.app.model.editor;
 
 import java.util.Date;
+import java.util.Set;
 
 import org.activiti.app.domain.editor.AbstractModel;
 import org.activiti.app.domain.editor.Model;
@@ -37,6 +38,7 @@ public class ModelRepresentation extends AbstractRepresentation {
   protected int version;
   protected String comment;
   protected Integer modelType;
+  protected Set<String> roleIds;
 
   public ModelRepresentation(AbstractModel model) {
     initialize(model);
@@ -66,7 +68,16 @@ public class ModelRepresentation extends AbstractRepresentation {
     }
   }
 
-  public String getId() {
+  
+  public Set<String> getRoleIds() {
+	return roleIds;
+}
+
+public void setRoleIds(Set<String> roleIds) {
+	this.roleIds = roleIds;
+}
+
+public String getId() {
     return id;
   }
 

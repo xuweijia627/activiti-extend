@@ -25,6 +25,8 @@ public class Model extends AbstractModel {
 	// add by xuWeiJia
 	@Column(name = "tenant_id")
     private String tenantId;
+	@Column(name = "role_ids")
+    private String roleIds;
 	// add end
 	
 	public Model() {
@@ -45,6 +47,14 @@ public class Model extends AbstractModel {
 
 	public void setTenantId(String tenantId) {
 		this.tenantId = tenantId;
+	}
+
+	public String getRoleIds() {
+		return roleIds;
+	}
+
+	public void setRoleIds(String roleIds) {
+		this.roleIds = roleIds;
 	}
 	
 	

@@ -218,6 +218,26 @@ public class ModelServiceImpl implements ModelService {
 	  persistModel(newModel);
 	  return newModel;
 }
+  @Override
+  @Transactional
+  public Model createModel(ModelRepresentation model, String editorJson, User createdBy, String tenantId,
+  		String roleIds) {
+	  Model newModel = new Model();
+	  newModel.setVersion(1);
+	  newModel.setName(model.getName());
+	  newModel.setKey(model.getKey());
+	  newModel.setModelType(model.getModelType());
+	  newModel.setCreated(Calendar.getInstance().getTime());
+	  newModel.setCreatedBy(createdBy.getId());
+	  newModel.setDescription(model.getDescription());
+	  newModel.setModelEditorJson(editorJson);
+	  newModel.setLastUpdated(Calendar.getInstance().getTime());
+	  newModel.setLastUpdatedBy(createdBy.getId());
+	  newModel.setTenantId(tenantId);
+	  newModel.setRoleIds(roleIds);
+	  persistModel(newModel);
+	  return newModel;
+  }
 
   @Override
   @Transactional
@@ -614,4 +634,5 @@ public class ModelServiceImpl implements ModelService {
     model.setVersion(basedOn.getVersion());
     model.setComment(basedOn.getComment());
   }
+
 }
