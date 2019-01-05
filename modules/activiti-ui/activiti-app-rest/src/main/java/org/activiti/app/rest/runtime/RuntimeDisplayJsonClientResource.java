@@ -115,12 +115,12 @@ public class RuntimeDisplayJsonClientResource {
   }
 
   @RequestMapping(value = "/rest/process-instances/{processInstanceId}/model-json", method = RequestMethod.GET, produces = "application/json")
-  public JsonNode getModelJSON(@PathVariable String processInstanceId) {
+  public JSONObject getModelJSON(@PathVariable String processInstanceId) {
 
-    User currentUser = SecurityUtils.getCurrentUserObject();
+    /* User currentUser = SecurityUtils.getCurrentUserObject(); //annotation by xuWeiJia
     if (!permissionService.hasReadPermissionOnProcessInstance(currentUser, processInstanceId)) {
       throw new NotPermittedException();
-    }
+    }*/
 
     ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
     if (processInstance == null) {
@@ -191,8 +191,9 @@ public class RuntimeDisplayJsonClientResource {
         completedSequenceFlows.add(current);
       }
     }
-
-    return displayNode;
+    // add by xuWeiJia 2018-12-29
+    return JSONObject.parseObject(displayNode.toString());
+    //return displayNode;
   }
 
   @RequestMapping(value = "/rest/process-definitions/{processDefinitionId}/model-json", method = RequestMethod.GET, produces = "application/json")
