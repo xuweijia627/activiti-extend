@@ -38,7 +38,7 @@ public class ModelRepresentation extends AbstractRepresentation {
   protected int version;
   protected String comment;
   protected Integer modelType;
-  protected Set<String> roleIds;
+  protected Long organizationId;
 
   public ModelRepresentation(AbstractModel model) {
     initialize(model);
@@ -69,12 +69,14 @@ public class ModelRepresentation extends AbstractRepresentation {
   }
 
   
-  public Set<String> getRoleIds() {
-	return roleIds;
+ 
+
+public Long getOrganizationId() {
+	return organizationId;
 }
 
-public void setRoleIds(Set<String> roleIds) {
-	this.roleIds = roleIds;
+public void setOrganizationId(Long organizationId) {
+	this.organizationId = organizationId;
 }
 
 public String getId() {

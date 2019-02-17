@@ -221,7 +221,7 @@ public class ModelServiceImpl implements ModelService {
   @Override
   @Transactional
   public Model createModel(ModelRepresentation model, String editorJson, User createdBy, String tenantId,
-  		String roleIds) {
+		  Long organizationId) {
 	  Model newModel = new Model();
 	  newModel.setVersion(1);
 	  newModel.setName(model.getName());
@@ -234,7 +234,7 @@ public class ModelServiceImpl implements ModelService {
 	  newModel.setLastUpdated(Calendar.getInstance().getTime());
 	  newModel.setLastUpdatedBy(createdBy.getId());
 	  newModel.setTenantId(tenantId);
-	  newModel.setRoleIds(roleIds);
+	  newModel.setOrganizationId(organizationId);
 	  persistModel(newModel);
 	  return newModel;
   }

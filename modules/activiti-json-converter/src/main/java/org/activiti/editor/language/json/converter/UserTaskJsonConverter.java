@@ -329,6 +329,20 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter implements Form
 
           task.setCandidateUsers(getValueAsList(PROPERTY_USERTASK_CANDIDATE_USERS, assignmentDefNode));
           task.setCandidateGroups(getValueAsList(PROPERTY_USERTASK_CANDIDATE_GROUPS, assignmentDefNode));
+       // add by xuWeiJia 取出岗位名称
+          StringBuffer roleNames=new StringBuffer();
+          JsonNode valuesNode = assignmentDefNode.get(PROPERTY_USERTASK_CANDIDATE_GROUPS);
+          if (valuesNode != null) {
+              for (JsonNode valueNode : valuesNode) {
+                  if (valueNode.get("value") != null && valueNode.get("value").isNull() == false) {
+                      if(valueNode.get("name") != null && valueNode.get("name").isNull() == false){
+                          roleNames.append(valueNode.get("name").asText());
+                      }
+                  }
+              }
+          }
+          addExtensionElement(ROLE_NAMES,roleNames.toString(),task);
+          // add end
 
           if (StringUtils.isNotEmpty(task.getAssignee()) && "$INITIATOR".equalsIgnoreCase(task.getAssignee()) == false) {
 

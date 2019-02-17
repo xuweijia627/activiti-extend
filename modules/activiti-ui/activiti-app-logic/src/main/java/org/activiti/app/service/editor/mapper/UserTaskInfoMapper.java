@@ -13,6 +13,7 @@
 package org.activiti.app.service.editor.mapper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -28,19 +29,18 @@ public class UserTaskInfoMapper extends AbstractInfoMapper {
 		UserTask userTask = (UserTask) element;
 		createPropertyNode("Assignee", userTask.getAssignee());
 		createPropertyNode("Candidate users", userTask.getCandidateUsers());
-		createPropertyNode("Candidate groups", userTask.getCandidateGroups());
+		//createPropertyNode("Candidate groups", userTask.getCandidateGroups());
 		createPropertyNode("Due date", userTask.getDueDate());
 		//createPropertyNode("Form key", userTask.getFormKey()); 用customCreatePropertyNode替换
 		createPropertyNode("Priority", userTask.getPriority());
 		// 2018-11-28 add by xuWeiJia 将sla配置组装成ObjectNode
 		customCreatePropertyNode("Form key","formString", userTask.getFormKey());
-		/*Map<String, List<ExtensionElement>> extensionElementMap= userTask.getExtensionElements();
-	    List<ExtensionElement> extensionElements=(List<ExtensionElement>) extensionElementMap.get("slaNode");
-	    if(CollectionUtils.isNotEmpty(extensionElements)) {
-	    	for(ExtensionElement ele : extensionElements) {
-		    	createPropertyNode("slaNode", ele.getElementText());
-		    }
-	    }*/
+		// 2018-11-28 add by xuWeiJia 将sla配置组装成ObjectNode
+				Map<String, List<ExtensionElement>> extensionElementMap= userTask.getExtensionElements();
+			    List<ExtensionElement> extensionElements=extensionElementMap.get("roleNames");
+			    if(CollectionUtils.isNotEmpty(extensionElements)) {
+		            createPropertyNode("Candidate groups", Arrays.asList(extensionElements.get(0).getElementText()));
+			    }
 		// add end
 		if (CollectionUtils.isNotEmpty(userTask.getFormProperties())) {
 		    List<String> formPropertyValues = new ArrayList<String>();

@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>activiti-app-conf-extension11</artifactId>
+	<artifactId>activiti-app-conf-extension13</artifactId>
 	<parent>
 		<groupId>org.activiti</groupId>
     	<artifactId>activiti-ui-root</artifactId>
@@ -19,12 +19,12 @@
         </dependency>
         <dependency>
             <groupId>org.activiti</groupId>
-            <artifactId>activiti-app-logic-extension9</artifactId>
+            <artifactId>activiti-app-logic-extension11</artifactId>
             <version>6.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.activiti</groupId>
-            <artifactId>activiti-app-rest-extension2</artifactId>
+            <artifactId>activiti-app-rest-extension4</artifactId>
             <version>6.0.0</version>
         </dependency>
         <dependency>
@@ -60,7 +60,7 @@
         </dependency>
         <dependency>
             <groupId>org.activiti</groupId>
-            <artifactId>activiti-json-converter-extension5</artifactId>
+            <artifactId>activiti-json-converter-extension6</artifactId>
             <version>6.0.0</version>
         </dependency>
         <dependency>

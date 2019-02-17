@@ -25,8 +25,8 @@ public class Model extends AbstractModel {
 	// add by xuWeiJia
 	@Column(name = "tenant_id")
     private String tenantId;
-	@Column(name = "role_ids")
-    private String roleIds;
+	@Column(name = "organization_id")
+    private Long organizationId;
 	// add end
 	
 	public Model() {
@@ -49,14 +49,12 @@ public class Model extends AbstractModel {
 		this.tenantId = tenantId;
 	}
 
-	public String getRoleIds() {
-		return roleIds;
+	public Long getOrganizationId() {
+		return organizationId;
 	}
 
-	public void setRoleIds(String roleIds) {
-		this.roleIds = roleIds;
+	public void setOrganizationId(Long organizationId) {
+		this.organizationId = organizationId;
 	}
-	
-	
-	
+
 }
