@@ -48,7 +48,7 @@ public interface ModelService {
   // add by xuWeiJia
   Model createModel(ModelRepresentation model, String editorJson, User createdBy,String tenantId);
   // add by xuWeiJia
-  Model createModel(ModelRepresentation model, String editorJson, User createdBy,String tenantId,Long organizationId);
+  Model createModel(ModelRepresentation model, String editorJson, User createdBy,String tenantId,Long organizationId,String createdByUserId);
   
   Model createModel(Model newModel, User createdBy);
 

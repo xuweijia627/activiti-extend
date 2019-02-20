@@ -27,6 +27,8 @@ public class Model extends AbstractModel {
     private String tenantId;
 	@Column(name = "organization_id")
     private Long organizationId;
+	@Column(name = "created_by_user_id")
+	private String createdByUserId;
 	// add end
 	
 	public Model() {
@@ -57,4 +59,13 @@ public class Model extends AbstractModel {
 		this.organizationId = organizationId;
 	}
 
+	public String getCreatedByUserId() {
+		return createdByUserId;
+	}
+
+	public void setCreatedByUserId(String createdByUserId) {
+		this.createdByUserId = createdByUserId;
+	}
+
+	
 }

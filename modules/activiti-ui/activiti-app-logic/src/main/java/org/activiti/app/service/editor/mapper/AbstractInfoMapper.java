@@ -201,12 +201,14 @@ public abstract class AbstractInfoMapper implements InfoMapper {
         ObjectNode jsonObject;
 		try {
 			jsonObject = (ObjectNode) objectMapper.readTree(nodeString);
-	        if(StringUtils.isNotBlank(jsonObject.get(FORM_ID).textValue())){
-	            formKeyDefinitionNode.put(FORM_ID,jsonObject.get(FORM_ID).textValue());
-	        }
-	        if(StringUtils.isNotBlank(jsonObject.get(FORM_NAME).textValue())){
-	            formKeyDefinitionNode.put(FORM_NAME,jsonObject.get(FORM_NAME).textValue());
-	        }
+			if(jsonObject != null && jsonObject.size()>0) {
+				if(StringUtils.isNotBlank(jsonObject.get(FORM_ID).textValue())){
+		            formKeyDefinitionNode.put(FORM_ID,jsonObject.get(FORM_ID).textValue());
+		        }
+		        if(StringUtils.isNotBlank(jsonObject.get(FORM_NAME).textValue())){
+		            formKeyDefinitionNode.put(FORM_NAME,jsonObject.get(FORM_NAME).textValue());
+		        }
+			}
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

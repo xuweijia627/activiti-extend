@@ -33,7 +33,7 @@ public class SequenceFlowInfoMapper extends AbstractInfoMapper {
 		    List<ExtensionElement> expressionDisplayElements=(List<ExtensionElement>) extensionElementMap.get(StencilConstants.EXPRESSION_DISPLAY);
 		    if(CollectionUtils.isNotEmpty(expressionDisplayElements)) {
 		    	for(ExtensionElement ele : expressionDisplayElements) {
-			    	createPropertyNode("Condition expression", ele.getElementText());
+			    	createPropertyNode("ConditionExpression", ele.getElementText());
 			    }
 		    }
 		    // add end
