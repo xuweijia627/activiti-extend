@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <name>Activiti - JSON Converter</name>
-  <artifactId>activiti-json-converter-extension6</artifactId>
+  <artifactId>activiti-json-converter-extension7</artifactId>
   <parent>
     <groupId>org.activiti</groupId>
     <artifactId>activiti-root</artifactId>

@@ -336,6 +336,9 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter implements Form
               for (JsonNode valueNode : valuesNode) {
                   if (valueNode.get("value") != null && valueNode.get("value").isNull() == false) {
                       if(valueNode.get("name") != null && valueNode.get("name").isNull() == false){
+                    	  if(StringUtils.isNotBlank(roleNames)) {
+                    		  roleNames.append(", ");
+                    	  }
                           roleNames.append(valueNode.get("name").asText());
                       }
                   }
