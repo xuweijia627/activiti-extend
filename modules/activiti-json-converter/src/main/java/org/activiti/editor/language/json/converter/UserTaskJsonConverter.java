@@ -391,6 +391,19 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter implements Form
         addExtensionElement(SLA_NODE,slaNodeArray.toString(),task);
     }
     // add end
+    // 2019-03-06 add by xuWeiJia 读取spt配置
+    JsonNode sptNode = getProperty("sptnode", elementNode);
+    if(sptNode !=null && sptNode.isNull()==false) {
+    	addExtensionElement(SPT_NODE,sptNode.toString(),task);
+    }
+    // 读提交模式配置   manual: 手工指派，automatic:自动指派，mix: 混合模式
+    JsonNode submitPatternNode = getProperty(SUBMIT_PATTERN, elementNode);
+    if(submitPatternNode !=null && submitPatternNode.isNull()==false) {
+    	addExtensionElement(SUBMIT_PATTERN,submitPatternNode.toString(),task);
+    }
+    // 读审批矩阵配置
+    
+    // add end
     return task;
   }
 
