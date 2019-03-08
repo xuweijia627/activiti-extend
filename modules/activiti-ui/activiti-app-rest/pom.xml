@@ -23,7 +23,7 @@
         </dependency>
         <dependency>
             <groupId>org.activiti</groupId>
-            <artifactId>activiti-app-logic-extension15</artifactId>
+            <artifactId>activiti-app-logic-extension16</artifactId>
             <version>6.0.0</version>
         </dependency>
 
@@ -43,7 +43,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.activiti</groupId>
-			<artifactId>activiti-json-converter-extension8</artifactId>
+			<artifactId>activiti-json-converter-extension9</artifactId>
 			<version>6.0.0</version>
 		</dependency>
         <dependency>

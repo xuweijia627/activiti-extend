@@ -393,12 +393,12 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter implements Form
     // add end
     // 2019-03-06 add by xuWeiJia 读取spt配置
     JsonNode sptNode = getProperty("sptnode", elementNode);
-    if(sptNode !=null && sptNode.isNull()==false) {
+    if(sptNode !=null && sptNode.isNull()==false && sptNode instanceof ObjectNode) {
     	addExtensionElement(SPT_NODE,sptNode.toString(),task);
     }
     // 读提交模式配置   manual: 手工指派，automatic:自动指派，mix: 混合模式
-    JsonNode submitPatternNode = getProperty(SUBMIT_PATTERN, elementNode);
-    if(submitPatternNode !=null && submitPatternNode.isNull()==false) {
+    JsonNode submitPatternNode = getProperty(SUBMIT_PATTERN.toLowerCase(), elementNode);
+    if(submitPatternNode !=null && submitPatternNode.isNull()==false && sptNode instanceof ObjectNode) {
     	addExtensionElement(SUBMIT_PATTERN,submitPatternNode.toString(),task);
     }
     // 读审批矩阵配置
