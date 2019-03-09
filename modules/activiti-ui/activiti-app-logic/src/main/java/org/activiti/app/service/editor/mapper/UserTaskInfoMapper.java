@@ -20,6 +20,7 @@ import java.util.Map;
 import org.activiti.bpmn.model.ExtensionElement;
 import org.activiti.bpmn.model.FormProperty;
 import org.activiti.bpmn.model.UserTask;
+import org.activiti.editor.constants.StencilConstants;
 import org.activiti.editor.language.json.converter.util.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -41,6 +42,11 @@ public class UserTaskInfoMapper extends AbstractInfoMapper {
 			    if(CollectionUtils.isNotEmpty(extensionElements)) {
 		            createPropertyNode("CandidateGroups", Arrays.asList(extensionElements.get(0).getElementText()));
 			    }
+			    List<ExtensionElement> submitPatternExtensionElements = extensionElementMap.get(StencilConstants.SUBMIT_PATTERN);
+		        if(CollectionUtils.isNotEmpty(submitPatternExtensionElements)) {
+		            ExtensionElement extensionElement = submitPatternExtensionElements.get(0);
+		            customCreatePropertyNode("submitPattern","submitPattern", extensionElement.getElementText());
+		        }
 		// add end
 		if (CollectionUtils.isNotEmpty(userTask.getFormProperties())) {
 		    List<String> formPropertyValues = new ArrayList<String>();

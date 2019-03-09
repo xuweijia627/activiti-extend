@@ -181,7 +181,11 @@ public abstract class AbstractInfoMapper implements InfoMapper {
             ObjectNode propertyNode = objectMapper.createObjectNode();
             propertyNode.put("name", name);
             propertyNode.put("type", type);
-            propertyNode.put("value", this.parseObjectNode(value));
+            if("formString".equals(type)) {
+            	propertyNode.put("value", this.parseObjectNode(value));
+            }else if("submitPattern".equals(type)) {
+            	propertyNode.put("value", this.parseSubmitPatternNode(value));
+            }
             propertiesNode.add(propertyNode);
         }
     }
@@ -217,6 +221,29 @@ public abstract class AbstractInfoMapper implements InfoMapper {
 			e.printStackTrace();
 		}
         return formKeyDefinitionNode;
+    }
+	
+	protected ObjectNode parseSubmitPatternNode(String nodeString){
+        ObjectNode submitPatternNode = objectMapper.createObjectNode();
+        ObjectNode jsonObject;
+		try {
+			jsonObject = (ObjectNode) objectMapper.readTree(nodeString);
+			if(jsonObject != null && jsonObject.size()>0) {
+				if(StringUtils.isNotBlank(jsonObject.get("value").textValue())){
+					submitPatternNode.put("value",jsonObject.get("value").textValue());
+		        }
+		        if(StringUtils.isNotBlank(jsonObject.get("name").textValue())){
+		        	submitPatternNode.put("name",jsonObject.get("name").textValue());
+		        }
+			}
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        return submitPatternNode;
     }
 	// add end
 }
