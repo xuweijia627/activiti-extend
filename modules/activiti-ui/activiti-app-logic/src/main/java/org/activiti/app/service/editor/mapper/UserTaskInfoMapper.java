@@ -28,15 +28,11 @@ public class UserTaskInfoMapper extends AbstractInfoMapper {
 
 	protected void mapProperties(Object element) {
 		UserTask userTask = (UserTask) element;
-		createPropertyNode("Assignee", userTask.getAssignee());
+		//createPropertyNode("Assignee", userTask.getAssignee());
 		createPropertyNode("Candidate users", userTask.getCandidateUsers());
-		//createPropertyNode("Candidate groups", userTask.getCandidateGroups());
 		createPropertyNode("Due date", userTask.getDueDate());
-		//createPropertyNode("Form key", userTask.getFormKey()); 用customCreatePropertyNode替换
 		createPropertyNode("Priority", userTask.getPriority());
-		// 2018-11-28 add by xuWeiJia 将sla配置组装成ObjectNode
 		customCreatePropertyNode("FormKey","formString", userTask.getFormKey());
-		// 2018-11-28 add by xuWeiJia 将sla配置组装成ObjectNode
 				Map<String, List<ExtensionElement>> extensionElementMap= userTask.getExtensionElements();
 			    List<ExtensionElement> extensionElements=extensionElementMap.get("roleNames");
 			    if(CollectionUtils.isNotEmpty(extensionElements)) {
@@ -47,6 +43,16 @@ public class UserTaskInfoMapper extends AbstractInfoMapper {
 		            ExtensionElement extensionElement = submitPatternExtensionElements.get(0);
 		            customCreatePropertyNode("submitPattern","submitPattern", extensionElement.getElementText());
 		        }
+		        List<ExtensionElement> assigneeNameExtension=extensionElementMap.get(StencilConstants.ASSIGNEE_NAME);
+			    if(CollectionUtils.isNotEmpty(assigneeNameExtension)) {
+		            createPropertyNode("Assignee", assigneeNameExtension.get(0).getElementText());
+			    }
+			    List<ExtensionElement> candidatePositionExtension=extensionElementMap.get(StencilConstants.CANDIDATE_POSITION);
+			    if(CollectionUtils.isNotEmpty(candidatePositionExtension)) {
+		            //createPropertyNode(StencilConstants.CANDIDATE_POSITION, candidatePositionExtension.get(0).getElementText());
+		            customCreatePropertyNode(StencilConstants.CANDIDATE_POSITION,StencilConstants.CANDIDATE_POSITION
+		            		, candidatePositionExtension.get(0).getElementText());
+			    }
 		// add end
 		if (CollectionUtils.isNotEmpty(userTask.getFormProperties())) {
 		    List<String> formPropertyValues = new ArrayList<String>();

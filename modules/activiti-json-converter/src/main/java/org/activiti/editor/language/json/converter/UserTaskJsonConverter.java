@@ -324,9 +324,26 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter implements Form
         if (typeNode == null || "static".equalsIgnoreCase(typeNode.asText())) {
           JsonNode assigneeNode = assignmentDefNode.get(PROPERTY_USERTASK_ASSIGNEE);
           if (assigneeNode != null && assigneeNode.isNull() == false) {
-            task.setAssignee(assigneeNode.asText());
+        	  // 取指定人 "assignee":{"value":"userdev","name":"xxxx"}
+        	  if(assigneeNode instanceof ObjectNode) {
+        		  JsonNode assigneeValue =assigneeNode.get("value");
+            	  if(assigneeValue!=null && assigneeValue.isNull()==false) {
+            		  task.setAssignee(assigneeValue.asText());
+            	  }
+            	  JsonNode assigneeName =assigneeNode.get("name");
+            	  if(assigneeName!=null && assigneeName.isNull()==false) {
+            		  addExtensionElement(ASSIGNEE_NAME,assigneeName.asText(),task);
+            	  }
+        	  } else {
+        		  task.setAssignee(assigneeNode.asText());
+        	  }
+            // task.setAssignee(assigneeNode.asText());
           }
-
+          JsonNode candidatePositionNode = assignmentDefNode.get("candidatePosition");
+          if(candidatePositionNode instanceof ArrayNode){
+              ArrayNode candidatePositionArray= (ArrayNode) candidatePositionNode;
+              addExtensionElement(CANDIDATE_POSITION,candidatePositionArray.toString(),task);
+          }
           task.setCandidateUsers(getValueAsList(PROPERTY_USERTASK_CANDIDATE_USERS, assignmentDefNode));
           task.setCandidateGroups(getValueAsList(PROPERTY_USERTASK_CANDIDATE_GROUPS, assignmentDefNode));
        // add by xuWeiJia 取出岗位名称

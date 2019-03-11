@@ -185,6 +185,8 @@ public abstract class AbstractInfoMapper implements InfoMapper {
             	propertyNode.put("value", this.parseObjectNode(value));
             }else if("submitPattern".equals(type)) {
             	propertyNode.put("value", this.parseSubmitPatternNode(value));
+            }else if("candidatePosition".equals(type)) {
+            	propertyNode.put("value", this.parseCandidatePositionNode(value));
             }
             propertiesNode.add(propertyNode);
         }
@@ -244,6 +246,18 @@ public abstract class AbstractInfoMapper implements InfoMapper {
 			e.printStackTrace();
 		}
         return submitPatternNode;
+    }
+	
+	protected ArrayNode parseCandidatePositionNode(String nodeString){
+        ArrayNode arrayNode = objectMapper.createArrayNode();
+		try {
+			arrayNode =  (ArrayNode) objectMapper.readTree(nodeString);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        return arrayNode;
     }
 	// add end
 }
