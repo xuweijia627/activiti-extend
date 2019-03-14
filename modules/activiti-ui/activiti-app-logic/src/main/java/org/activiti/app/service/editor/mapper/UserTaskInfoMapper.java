@@ -32,9 +32,16 @@ public class UserTaskInfoMapper extends AbstractInfoMapper {
 		createPropertyNode("Candidate users", userTask.getCandidateUsers());
 		createPropertyNode("Due date", userTask.getDueDate());
 		createPropertyNode("Priority", userTask.getPriority());
-		customCreatePropertyNode("FormKey","formString", userTask.getFormKey());
+		//customCreatePropertyNode("FormKey","formString", userTask.getFormKey());
+		
 				Map<String, List<ExtensionElement>> extensionElementMap= userTask.getExtensionElements();
-			    List<ExtensionElement> extensionElements=extensionElementMap.get("roleNames");
+				List<ExtensionElement> formNameElements = extensionElementMap.get(StencilConstants.FORM_NAME);
+				if(CollectionUtils.isNotEmpty(formNameElements)) {
+		            ExtensionElement extensionElement = formNameElements.get(0);
+		            customCreatePropertyNode("FormKey","formString", extensionElement.getElementText());
+		        }
+				
+			    List<ExtensionElement> extensionElements=extensionElementMap.get(StencilConstants.ROLE_NAMES);
 			    if(CollectionUtils.isNotEmpty(extensionElements)) {
 		            createPropertyNode("CandidateGroups", Arrays.asList(extensionElements.get(0).getElementText()));
 			    }

@@ -171,18 +171,18 @@ public abstract class AbstractInfoMapper implements InfoMapper {
 	 * @param name
 	 * @param value
 	 */
-	public static final String DOUBLE_QUOTES="\"\"";
-	public static final String QUOTES="\"";
-	public static final String BLANK="";
-	public static final String FORM_ID="id";
-	public static final String FORM_NAME="name";
+	//public static final String DOUBLE_QUOTES="\"\"";
+	//public static final String QUOTES="\"";
+	//public static final String BLANK="";
+	//public static final String FORM_ID="id";
+	//public static final String FORM_NAME="name";
 	protected void customCreatePropertyNode(String name,String type, String value) {
         if (StringUtils.isNotEmpty(value)) {
             ObjectNode propertyNode = objectMapper.createObjectNode();
             propertyNode.put("name", name);
             propertyNode.put("type", type);
             if("formString".equals(type)) {
-            	propertyNode.put("value", this.parseObjectNode(value));
+            	propertyNode.put("value", this.formKeyNode(value));
             }else if("submitPattern".equals(type)) {
             	propertyNode.put("value", this.parseSubmitPatternNode(value));
             }else if("candidatePosition".equals(type)) {
@@ -192,36 +192,9 @@ public abstract class AbstractInfoMapper implements InfoMapper {
         }
     }
 	
-	protected ObjectNode parseObjectNode(String nodeString){
+	protected ObjectNode formKeyNode(String nodeString){
         ObjectNode formKeyDefinitionNode = objectMapper.createObjectNode();
-        if(DOUBLE_QUOTES.equals(nodeString)){
-            return formKeyDefinitionNode;
-        }
-        if(nodeString.startsWith(QUOTES) && nodeString.endsWith(QUOTES)){
-            nodeString=nodeString.substring(1,nodeString.length()-1)
-                    .replace("\\",BLANK);
-            if(DOUBLE_QUOTES.equals(nodeString)){
-                return formKeyDefinitionNode;
-            }
-        }
-        ObjectNode jsonObject;
-		try {
-			jsonObject = (ObjectNode) objectMapper.readTree(nodeString);
-			if(jsonObject != null && jsonObject.size()>0) {
-				if(StringUtils.isNotBlank(jsonObject.get(FORM_ID).textValue())){
-		            formKeyDefinitionNode.put(FORM_ID,jsonObject.get(FORM_ID).textValue());
-		        }
-		        if(StringUtils.isNotBlank(jsonObject.get(FORM_NAME).textValue())){
-		            formKeyDefinitionNode.put(FORM_NAME,jsonObject.get(FORM_NAME).textValue());
-		        }
-			}
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        formKeyDefinitionNode.put("name", nodeString);
         return formKeyDefinitionNode;
     }
 	

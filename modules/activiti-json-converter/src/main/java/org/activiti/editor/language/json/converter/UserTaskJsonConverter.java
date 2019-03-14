@@ -15,15 +15,13 @@ package org.activiti.editor.language.json.converter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.activiti.bpmn.model.BaseElement;
-import org.activiti.bpmn.model.CustomProperty;
-import org.activiti.bpmn.model.ExtensionAttribute;
 import org.activiti.bpmn.model.ExtensionElement;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
 import org.activiti.editor.language.json.converter.util.CollectionUtils;
+import org.activiti.editor.language.json.converter.util.JsonConverterUtil;
 import org.activiti.editor.language.json.model.ModelInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -31,6 +29,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 
 /**
  * @author Tijs Rademakers
@@ -298,7 +297,25 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter implements Form
     UserTask task = new UserTask();
 
     task.setPriority(getPropertyValueAsString(PROPERTY_USERTASK_PRIORITY, elementNode));
-    String formKey = getPropertyValueAsString(PROPERTY_FORMKEY, elementNode);
+    //String formKey = getPropertyValueAsString(PROPERTY_FORMKEY, elementNode);
+    String formKey ="";
+    // 取formId
+    JsonNode formKeyNode = JsonConverterUtil.getProperty(PROPERTY_FORMKEY, elementNode);
+    if(formKeyNode !=null) {
+    	if(formKeyNode.isNull()==false && formKeyNode instanceof ObjectNode) {
+    		JsonNode idNode = formKeyNode.get("id");
+    		if(idNode instanceof TextNode) {
+    			formKey = idNode.asText();
+    		}
+    		// FORM_NAME
+    		JsonNode formNameNode = formKeyNode.get("name");
+    		if(formNameNode!=null && formNameNode.isNull()==false) {
+      		  addExtensionElement(FORM_NAME,formNameNode.asText(),task);
+      	  }
+    	}else if(formKeyNode instanceof TextNode) {
+    		formKey = formKeyNode.asText();
+    	}
+    }
     if (StringUtils.isNotEmpty(formKey)) {
       task.setFormKey(formKey);
     } else {
@@ -419,7 +436,10 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter implements Form
     	addExtensionElement(SUBMIT_PATTERN,submitPatternNode.toString(),task);
     }
     // 读审批矩阵配置
-    
+    JsonNode approvalNode = getProperty(APPROVAL.toLowerCase(), elementNode);
+    if(approvalNode !=null && approvalNode.isNull()==false && approvalNode instanceof ObjectNode) {
+    	addExtensionElement(APPROVAL,approvalNode.toString(),task);
+    }
     // add end
     return task;
   }

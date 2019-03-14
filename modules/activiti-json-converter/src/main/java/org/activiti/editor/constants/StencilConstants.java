@@ -253,5 +253,7 @@ public interface StencilConstants {
   final String SUBMIT_PATTERN = "submitPattern";
   final String CANDIDATE_POSITION = "candidatePosition";
   final String ASSIGNEE_NAME = "assigneeName";
+  final String APPROVAL = "approval";
+  final String FORM_NAME = "formName";
   // add end
 }
