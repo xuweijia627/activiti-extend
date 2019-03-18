@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.activiti.bpmn.model.BaseElement;
+import org.activiti.bpmn.model.ExtensionAttribute;
 import org.activiti.bpmn.model.ExtensionElement;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
@@ -356,6 +357,28 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter implements Form
         	  }
             // task.setAssignee(assigneeNode.asText());
           }
+          JsonNode applyNode = assignmentDefNode.get(APPLY);
+          if (applyNode != null && applyNode.isNull() == false) {
+        	  // 取申请人 "apply":{"value":"apply","name":"申请人"}
+        	  if(applyNode instanceof ObjectNode) {
+        		  JsonNode applyValue =applyNode.get("value");
+            	  if(applyValue!=null && applyValue.isNull()==false) {
+            		  addExtensionElement(APPLY,applyValue.asText(),task);
+            	  }
+        	  }
+          }
+          JsonNode superiorNode = assignmentDefNode.get(SUPERIOR);
+          if (superiorNode != null && superiorNode.isNull() == false) {
+        	  // 取直属上级 "superior":{"value":"superior","name":"直属上级"}
+        	  if(superiorNode instanceof ObjectNode) {
+        		  JsonNode superiorValue =superiorNode.get("value");
+            	  if(superiorValue!=null && superiorValue.isNull()==false) {
+            		  addExtensionElement(SUPERIOR,superiorValue.asText(),task);
+            	  }
+        	  }
+          }
+          
+          
           JsonNode candidatePositionNode = assignmentDefNode.get("candidatePosition");
           if(candidatePositionNode instanceof ArrayNode){
               ArrayNode candidatePositionArray= (ArrayNode) candidatePositionNode;

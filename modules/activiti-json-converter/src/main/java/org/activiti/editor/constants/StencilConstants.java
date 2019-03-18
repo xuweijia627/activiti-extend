@@ -255,5 +255,8 @@ public interface StencilConstants {
   final String ASSIGNEE_NAME = "assigneeName";
   final String APPROVAL = "approval";
   final String FORM_NAME = "formName";
+  final String APPLY = "apply";
+  final String SUPERIOR = "superior";
+  final String NAMESPACE = "http://activiti.com/modeler";
   // add end
 }
