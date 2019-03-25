@@ -458,10 +458,10 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter implements Form
     if(submitPatternNode !=null && submitPatternNode.isNull()==false && submitPatternNode instanceof ObjectNode) {
     	addExtensionElement(SUBMIT_PATTERN,submitPatternNode.toString(),task);
     }
-    // 读审批矩阵配置
-    JsonNode approvalNode = getProperty(APPROVAL.toLowerCase(), elementNode);
-    if(approvalNode !=null && approvalNode.isNull()==false && approvalNode instanceof ObjectNode) {
-    	addExtensionElement(APPROVAL,approvalNode.toString(),task);
+    // 读执行条件
+    JsonNode executionCondition = getProperty(EXECUTION_CONDITION, elementNode);
+    if(executionCondition !=null && executionCondition.isNull()==false && executionCondition instanceof ArrayNode) {
+    	addExtensionElement(EXECUTION_CONDITION,executionCondition.toString(),task);
     }
     // add end
     return task;

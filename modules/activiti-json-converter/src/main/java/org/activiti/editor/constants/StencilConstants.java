@@ -258,5 +258,6 @@ public interface StencilConstants {
   final String APPLY = "apply";
   final String SUPERIOR = "superior";
   final String NAMESPACE = "http://activiti.com/modeler";
+  final String EXECUTION_CONDITION = "executionCondition";
   // add end
 }

@@ -15,6 +15,7 @@ package org.activiti.editor.language.json.converter;
 import java.util.Map;
 
 import org.activiti.bpmn.model.BaseElement;
+import org.activiti.bpmn.model.ExtensionElement;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.ManualTask;
 
@@ -50,6 +51,19 @@ public class ManualTaskJsonConverter extends BaseBpmnJsonConverter {
 
   protected FlowElement convertJsonToElement(JsonNode elementNode, JsonNode modelNode, Map<String, JsonNode> shapeMap) {
     ManualTask task = new ManualTask();
+    JsonNode approvalNode = getProperty(APPROVAL, elementNode);
+    if(approvalNode !=null && approvalNode.isNull()==false && approvalNode instanceof ObjectNode) {
+    	addExtensionElement(APPROVAL,approvalNode.toString(),task);
+    }
     return task;
   }
+  
+  protected void addExtensionElement(String name, String elementText, ManualTask task) {
+	    ExtensionElement extensionElement = new ExtensionElement();
+	    extensionElement.setNamespace(NAMESPACE);
+	    extensionElement.setNamespacePrefix("modeler");
+	    extensionElement.setName(name);
+	    extensionElement.setElementText(elementText);
+	    task.addExtensionElement(extensionElement);
+	  }
 }
