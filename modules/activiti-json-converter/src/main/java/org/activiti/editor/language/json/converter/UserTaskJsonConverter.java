@@ -400,8 +400,11 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter implements Form
                       }
                   }
               }
+              if(StringUtils.isNotBlank(roleNames)) {
+            	  addExtensionElement(ROLE_NAMES,roleNames.toString(),task);
+              }
           }
-          addExtensionElement(ROLE_NAMES,roleNames.toString(),task);
+          
           // add end
 
           if (StringUtils.isNotEmpty(task.getAssignee()) && "$INITIATOR".equalsIgnoreCase(task.getAssignee()) == false) {
