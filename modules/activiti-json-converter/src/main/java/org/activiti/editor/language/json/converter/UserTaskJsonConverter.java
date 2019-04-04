@@ -352,6 +352,14 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter implements Form
             	  if(assigneeName!=null && assigneeName.isNull()==false) {
             		  addExtensionElement(ASSIGNEE_NAME,assigneeName.asText(),task);
             	  }
+            	  JsonNode organizationId =assigneeNode.get(ORGANIZATION_ID);
+            	  if(organizationId!=null && organizationId.isNull()==false) {
+            		  addExtensionElement(ORGANIZATION_ID,organizationId.asText(),task);
+            	  }
+            	  JsonNode organizationName =assigneeNode.get(ORGANIZATION_NAME);
+            	  if(organizationName!=null && organizationName.isNull()==false) {
+            		  addExtensionElement(ORGANIZATION_NAME,organizationName.asText(),task);
+            	  }
         	  } else {
         		  task.setAssignee(assigneeNode.asText());
         	  }

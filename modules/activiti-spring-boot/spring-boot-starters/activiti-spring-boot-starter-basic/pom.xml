@@ -9,7 +9,7 @@
 		<version>6.0.0</version>
 	</parent>
 
-	<artifactId>activiti-spring-boot-starter-basic-extension2</artifactId>
+	<artifactId>activiti-spring-boot-starter-basic-extension3</artifactId>
 	<!-- <properties> <spring.framework.version>4.1.4.RELEASE</spring.framework.version> 
 		</properties> -->
 
@@ -24,7 +24,7 @@
 		<!-- common -->
 		<dependency>
 			<groupId>org.activiti</groupId>
-			<artifactId>activiti-engine-extension2</artifactId>
+			<artifactId>activiti-engine-extension3</artifactId>
 			<version>6.0.0</version>
 		</dependency>
 		<dependency>

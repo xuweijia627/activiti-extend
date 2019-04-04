@@ -53,6 +53,10 @@ public class UserTaskInfoMapper extends AbstractInfoMapper {
 		        List<ExtensionElement> assigneeNameExtension=extensionElementMap.get(StencilConstants.ASSIGNEE_NAME);
 			    if(CollectionUtils.isNotEmpty(assigneeNameExtension)) {
 		            createPropertyNode("Assignee", assigneeNameExtension.get(0).getElementText());
+		            List<ExtensionElement> organizationNameExtension=extensionElementMap.get(StencilConstants.ORGANIZATION_NAME);
+		            if(CollectionUtils.isNotEmpty(organizationNameExtension)) {
+		            	createPropertyNode("organizationName", organizationNameExtension.get(0).getElementText());
+		            }
 			    }
 			    List<ExtensionElement> candidatePositionExtension=extensionElementMap.get(StencilConstants.CANDIDATE_POSITION);
 			    if(CollectionUtils.isNotEmpty(candidatePositionExtension)) {
