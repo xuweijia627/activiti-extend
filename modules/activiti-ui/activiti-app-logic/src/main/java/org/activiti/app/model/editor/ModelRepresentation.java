@@ -39,6 +39,7 @@ public class ModelRepresentation extends AbstractRepresentation {
   protected String comment;
   protected Integer modelType;
   protected Long organizationId;
+  protected String processType;
 
   public ModelRepresentation(AbstractModel model) {
     initialize(model);
@@ -63,6 +64,8 @@ public class ModelRepresentation extends AbstractRepresentation {
     // When based on a ProcessModel and not history, this is always the latest version
     if (model instanceof Model) {
       this.setLatestVersion(true);
+      this.setOrganizationId(((Model) model).getOrganizationId());
+      this.setProcessType(((Model) model).getProcessType());
     } else if (model instanceof ModelHistory) {
       this.setLatestVersion(false);
     }
@@ -70,6 +73,14 @@ public class ModelRepresentation extends AbstractRepresentation {
 
   
  
+
+public String getProcessType() {
+	return processType;
+}
+
+public void setProcessType(String processType) {
+	this.processType = processType;
+}
 
 public Long getOrganizationId() {
 	return organizationId;

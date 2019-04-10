@@ -29,6 +29,11 @@ public class Model extends AbstractModel {
     private Long organizationId;
 	@Column(name = "created_by_user_id")
 	private String createdByUserId;
+	/**
+	 * approval :审批    processAudit 流程审核
+	 */
+	@Column(name = "process_type")
+	protected String processType;
 	// add end
 	
 	public Model() {
@@ -65,6 +70,14 @@ public class Model extends AbstractModel {
 
 	public void setCreatedByUserId(String createdByUserId) {
 		this.createdByUserId = createdByUserId;
+	}
+
+	public String getProcessType() {
+		return processType;
+	}
+
+	public void setProcessType(String processType) {
+		this.processType = processType;
 	}
 
 	

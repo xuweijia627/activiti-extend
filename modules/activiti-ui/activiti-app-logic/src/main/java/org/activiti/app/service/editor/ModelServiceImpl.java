@@ -236,6 +236,7 @@ public class ModelServiceImpl implements ModelService {
 	  newModel.setTenantId(tenantId);
 	  newModel.setOrganizationId(organizationId);
 	  newModel.setCreatedByUserId(createdByUserId);
+	  newModel.setProcessType(model.getProcessType());
 	  persistModel(newModel);
 	  return newModel;
   }
