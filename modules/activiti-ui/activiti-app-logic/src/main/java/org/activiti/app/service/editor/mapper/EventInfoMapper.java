@@ -12,6 +12,9 @@
  */
 package org.activiti.app.service.editor.mapper;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.activiti.bpmn.model.ErrorEventDefinition;
 import org.activiti.bpmn.model.Event;
 import org.activiti.bpmn.model.EventDefinition;
@@ -33,7 +36,21 @@ public class EventInfoMapper extends AbstractInfoMapper {
 		            createPropertyNode("Timer date", timerDef.getTimeDate());
 		        }
 		        if (StringUtils.isNotEmpty(timerDef.getTimeDuration())) {
-                    createPropertyNode("Timer duration", timerDef.getTimeDuration());
+		        	// add by xuWeiJia 2019-04-23
+		        	String regex = "(PT)(\\d+)(M|H)";
+		        	String timeDuration = timerDef.getTimeDuration();
+		        	Matcher matcher = Pattern.compile(regex).matcher(timeDuration);
+	        		if(matcher.matches()) {
+	        			String value = matcher.group(2);
+	        			timerDef.setTimeDuration(value);
+	        			if(timeDuration.endsWith("H")) {
+	        				createPropertyNode("Unit", "hour");
+	        			} else if(timeDuration.endsWith("M")) {
+	        				createPropertyNode("Unit", "minute");
+	        			}
+	        		}
+		        	// add end
+	        		createPropertyNode("TimerDuration", timerDef.getTimeDuration());
                 }
 		        if (StringUtils.isNotEmpty(timerDef.getTimeDuration())) {
                     createPropertyNode("Timer cycle", timerDef.getTimeCycle());
