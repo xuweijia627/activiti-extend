@@ -132,6 +132,11 @@ public class StartEventJsonConverter extends BaseBpmnJsonConverter implements Fo
       convertJsonToSignalDefinition(elementNode, startEvent);
     }
     // add by xuWeiJia
+    String conditionKeys = getPropertyValueAsString(CONDITION_KEYS, elementNode);
+    if(StringUtils.isNotBlank(conditionKeys)) {
+    	addExtensionElement(CONDITION_KEYS, conditionKeys, startEvent);
+    }
+    
     JsonNode sla = modelNode.get(SLA);
     if(sla!=null) {
     	ArrayNode slaData= (ArrayNode) sla.get(DATA);

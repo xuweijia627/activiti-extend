@@ -264,5 +264,6 @@ public interface StencilConstants {
   final String EXECUTION_CONDITION = "executionCondition";
   final String ORGANIZATION_ID = "organizationId";
   final String ORGANIZATION_NAME = "organizationName";
+  final String CONDITION_KEYS = "conditionKeys";
   // add end
 }
