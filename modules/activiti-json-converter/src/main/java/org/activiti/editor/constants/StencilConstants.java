@@ -245,9 +245,12 @@ public interface StencilConstants {
   // add by xuWeiJia 2018-11-30
   final String EXPRESSION_DISPLAY = "expressionDisplay";
   final String SLA = "sla";
+  final String SPT = "spt";
   final String DATA = "data";
   final String SLA_NODE = "slaNode";
+  final String SOP_NODE = "sop";
   final String DEFAULT_SLA = "defaultSla";
+  final String DEFAULT_SPT = "defaultSpt";
   final String ROLE_NAMES = "roleNames";
   final String SPT_NODE = "sptNode";
   final String SUBMIT_PATTERN = "submitPattern";

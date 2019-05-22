@@ -150,7 +150,28 @@ public class StartEventJsonConverter extends BaseBpmnJsonConverter implements Fo
             }else if(defaultSla instanceof JsonNode){
                 id=defaultSla.get(EDITOR_STENCIL_ID).asText();
             }
-            addExtensionElement(SLA,slaData.toString(),id,startEvent);
+            addExtensionElement(SLA,slaData.toString(),id,DEFAULT_SLA,startEvent);
+    	}
+    }
+    JsonNode spt = modelNode.get(SPT);
+    if(spt!=null) {
+    	ArrayNode sptData= (ArrayNode) spt.get(DATA);
+    	if(sptData!=null && sptData.size()>0) {
+    		JsonNode defaultSpt = getProperty(SPT, modelNode);
+            String id="";
+            if(defaultSpt instanceof TextNode){
+                try {
+                    JsonNode jsonNode = objectMapper.readTree(defaultSpt.asText());
+                    if(jsonNode!=null){
+                        id=jsonNode.get(EDITOR_STENCIL_ID).asText();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else if(defaultSpt instanceof JsonNode){
+                id=defaultSpt.get(EDITOR_STENCIL_ID).asText();
+            }
+            addExtensionElement(SPT,sptData.toString(),id,DEFAULT_SPT,startEvent);
     	}
     }
     // add end
@@ -167,15 +188,15 @@ public class StartEventJsonConverter extends BaseBpmnJsonConverter implements Fo
   }
   
   // add by xuWeiJia
-  protected void addExtensionElement(String name, String elementText,String id, Event event) {
+  protected void addExtensionElement(String name, String elementText,String attributeValue,String attributeName, Event event) {
       ExtensionElement extensionElement = new ExtensionElement();
       extensionElement.setNamespace(NAMESPACE);
       extensionElement.setNamespacePrefix("modeler");
       extensionElement.setName(name);
       extensionElement.setElementText(elementText);
       ExtensionAttribute attribute=new ExtensionAttribute();
-      attribute.setName(DEFAULT_SLA);
-      attribute.setValue(id);
+      attribute.setName(attributeName);
+      attribute.setValue(attributeValue);
       attribute.setNamespace(NAMESPACE);
       extensionElement.addAttribute(attribute);
       event.addExtensionElement(extensionElement);
