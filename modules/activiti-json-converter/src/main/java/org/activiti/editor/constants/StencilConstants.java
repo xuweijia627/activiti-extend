@@ -249,6 +249,7 @@ public interface StencilConstants {
   final String DATA = "data";
   final String SLA_NODE = "slaNode";
   final String SOP_NODE = "sop";
+  final String WI_NODE = "wiNode";
   final String DEFAULT_SLA = "defaultSla";
   final String DEFAULT_SPT = "defaultSpt";
   final String ROLE_NAMES = "roleNames";

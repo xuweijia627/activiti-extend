@@ -14,7 +14,6 @@ package org.activiti.editor.language.json.converter;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.UUID;
 
 import org.activiti.bpmn.model.BaseElement;
 import org.activiti.bpmn.model.ErrorEventDefinition;
@@ -27,7 +26,6 @@ import org.activiti.bpmn.model.MessageEventDefinition;
 import org.activiti.bpmn.model.SignalEventDefinition;
 import org.activiti.bpmn.model.StartEvent;
 import org.activiti.bpmn.model.TimerEventDefinition;
-import org.activiti.bpmn.model.UserTask;
 import org.activiti.editor.language.json.model.ModelInfo;
 import org.apache.commons.lang3.StringUtils;
 
@@ -137,7 +135,30 @@ public class StartEventJsonConverter extends BaseBpmnJsonConverter implements Fo
     	addExtensionElement(CONDITION_KEYS, conditionKeys, startEvent);
     }
     
-    JsonNode sla = modelNode.get(SLA);
+    JsonNode sla = getProperty(SLA, modelNode);
+    if(sla instanceof TextNode && !sla.textValue().equals("") && !sla.textValue().equals("null")) {
+    	try {
+			sla = objectMapper.readTree(sla.textValue());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+    if(sla instanceof ArrayNode) {
+    	addExtensionElement(SLA,sla.toString(),startEvent);
+    }
+    
+    JsonNode spt = getProperty(SPT, modelNode);
+    if(spt instanceof TextNode && !spt.textValue().equals("") && !spt.textValue().equals("null")) {
+    	try {
+    		spt = objectMapper.readTree(spt.textValue());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+    if(spt instanceof ArrayNode) {
+    	addExtensionElement(SPT,spt.toString(),startEvent);
+    }
+    /*JsonNode sla = modelNode.get(SLA);
     if(sla!=null) {
     	ArrayNode slaData= (ArrayNode) sla.get(DATA);
     	if(slaData!=null && slaData.size()>0) {
@@ -178,7 +199,7 @@ public class StartEventJsonConverter extends BaseBpmnJsonConverter implements Fo
             }
             addExtensionElement(SPT,sptData.toString(),id,DEFAULT_SPT,startEvent);
     	}
-    }
+    }*/
     // add end
     return startEvent;
   }

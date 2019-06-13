@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.activiti.bpmn.model.BaseElement;
-import org.activiti.bpmn.model.ExtensionAttribute;
 import org.activiti.bpmn.model.ExtensionElement;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
@@ -458,7 +457,7 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter implements Form
         ArrayNode slaNodeArray= (ArrayNode) slaNode;
         addExtensionElement(SLA_NODE,slaNodeArray.toString(),task);
     }
-    // add end
+    
     // 2019-03-06 add by xuWeiJia 读取spt配置
     JsonNode sptNode = getProperty("sptnode", elementNode);
     if(sptNode !=null && sptNode.isNull()==false) {
@@ -475,7 +474,12 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter implements Form
         ArrayNode sopNodeArray= (ArrayNode) sopNode;
         addExtensionElement(SOP_NODE,sopNodeArray.toString(),task);
     }
-    
+    // 读取wi配置
+    JsonNode wiNode = getProperty("winode", elementNode);
+    if(wiNode instanceof ArrayNode){
+        ArrayNode wiNodeArray= (ArrayNode) wiNode;
+        addExtensionElement(WI_NODE,wiNodeArray.toString(),task);
+    }
     
     // 读提交模式配置   manual: 手工指派，automatic:自动指派，mix: 混合模式
     JsonNode submitPatternNode = getProperty(SUBMIT_PATTERN.toLowerCase(), elementNode);
