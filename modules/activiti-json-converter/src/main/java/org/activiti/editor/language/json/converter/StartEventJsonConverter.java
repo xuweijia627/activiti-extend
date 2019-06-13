@@ -139,6 +139,9 @@ public class StartEventJsonConverter extends BaseBpmnJsonConverter implements Fo
     if(sla instanceof TextNode && !sla.textValue().equals("") && !sla.textValue().equals("null")) {
     	try {
 			sla = objectMapper.readTree(sla.textValue());
+			if(sla instanceof TextNode && !sla.textValue().equals("") && !sla.textValue().equals("null")) {
+				sla = objectMapper.readTree(sla.textValue());
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -151,6 +154,9 @@ public class StartEventJsonConverter extends BaseBpmnJsonConverter implements Fo
     if(spt instanceof TextNode && !spt.textValue().equals("") && !spt.textValue().equals("null")) {
     	try {
     		spt = objectMapper.readTree(spt.textValue());
+    		if(spt instanceof TextNode && !spt.textValue().equals("") && !spt.textValue().equals("null")) {
+    			spt = objectMapper.readTree(spt.textValue());
+    		}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

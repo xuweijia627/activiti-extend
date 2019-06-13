@@ -40,6 +40,7 @@ import org.activiti.bpmn.model.SequenceFlow;
 import org.activiti.bpmn.model.ServiceTask;
 import org.activiti.bpmn.model.SignalEventDefinition;
 import org.activiti.bpmn.model.SubProcess;
+import org.activiti.bpmn.model.TerminateEventDefinition;
 import org.activiti.bpmn.model.TextAnnotation;
 import org.activiti.bpmn.model.TimerEventDefinition;
 import org.activiti.editor.language.json.converter.BpmnJsonConverter;
@@ -327,6 +328,8 @@ public class BpmnDisplayJsonConverter {
                     if (StringUtils.isNotEmpty(messageDef.getMessageRef())) {
                         eventNode.put("messageRef", messageDef.getMessageRef());
                     }
+                } else if(eventDef instanceof TerminateEventDefinition) {
+                	eventNode.put("type", "EndTerminateEvent");
                 }
                 elementNode.put("eventDefinition", eventNode);
             }
