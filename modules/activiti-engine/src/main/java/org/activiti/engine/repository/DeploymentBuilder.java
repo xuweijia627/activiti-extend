@@ -99,4 +99,12 @@ public interface DeploymentBuilder {
    */
   Deployment deploy();
 
+  /**
+   * 扩展的流程部署接口，用于不发版本 修改流程定义
+   * @author xuWeiJia 2019/06/25
+   * @param bpmnModel
+   * @param deploymentId
+   * @return
+   */
+  Deployment deploy(BpmnModel bpmnModel,String deploymentId);
 }

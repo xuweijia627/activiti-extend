@@ -211,4 +211,13 @@ public class DeploymentServiceImpl implements DeploymentService {
       throw new InternalServerErrorException("Could not deserialize app definition");
     }
   }
+
+	@Override
+	@Transactional
+	public void updateAppDefinition(BpmnModel bpmnModel, String deploymentId) {
+		DeploymentBuilder deploymentBuilder = repositoryService.createDeployment();
+		deploymentBuilder.deploy(bpmnModel, deploymentId);
+	}
+  
+  
 }

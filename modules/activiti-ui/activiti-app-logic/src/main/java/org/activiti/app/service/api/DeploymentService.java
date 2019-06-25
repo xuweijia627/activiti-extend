@@ -13,6 +13,7 @@
 package org.activiti.app.service.api;
 
 import org.activiti.app.domain.editor.Model;
+import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.repository.Deployment;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,5 +25,14 @@ public interface DeploymentService {
 
     @Transactional
     void deleteAppDefinition(String appDefinitionId);
+    
+    /**
+     * 根据deploymentId修改流程定义  (应用于不发版本 修改流程定义)
+     * @author xuWeiJia 2019/06/25
+     * @param bpmnModel
+     * @param deploymentId
+     */
+    @Transactional
+	void updateAppDefinition(BpmnModel bpmnModel,String deploymentId);
 
 }

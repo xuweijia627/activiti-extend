@@ -187,6 +187,11 @@ public class DeploymentBuilderImpl implements DeploymentBuilder, Serializable {
   public Deployment deploy() {
     return repositoryService.deploy(this);
   }
+  
+  @Override
+  public Deployment deploy(BpmnModel bpmnModel, String deploymentId) {
+	return repositoryService.deploy(bpmnModel, deploymentId, this);
+  }
 
   // getters and setters
   // //////////////////////////////////////////////////////

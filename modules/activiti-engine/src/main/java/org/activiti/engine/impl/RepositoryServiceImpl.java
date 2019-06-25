@@ -29,6 +29,7 @@ import org.activiti.engine.impl.cmd.DeleteDeploymentCmd;
 import org.activiti.engine.impl.cmd.DeleteIdentityLinkForProcessDefinitionCmd;
 import org.activiti.engine.impl.cmd.DeleteModelCmd;
 import org.activiti.engine.impl.cmd.DeployCmd;
+import org.activiti.engine.impl.cmd.DeployExtensionCmd;
 import org.activiti.engine.impl.cmd.GetBpmnModelCmd;
 import org.activiti.engine.impl.cmd.GetDeploymentProcessDefinitionCmd;
 import org.activiti.engine.impl.cmd.GetDeploymentProcessDiagramCmd;
@@ -85,6 +86,17 @@ public class RepositoryServiceImpl extends ServiceImpl implements RepositoryServ
   public Deployment deploy(DeploymentBuilderImpl deploymentBuilder) {
     return commandExecutor.execute(new DeployCmd<Deployment>(deploymentBuilder));
   }
+  
+  	/**
+  	 * add by xuWeiJia
+  	 * @param bpmnModel
+  	 * @param deploymentId
+  	 * @param deploymentBuilder
+  	 * @return
+  	 */
+	public Deployment deploy(BpmnModel bpmnModel, String deploymentId, DeploymentBuilderImpl deploymentBuilder) {
+		return commandExecutor.execute(new DeployExtensionCmd<Deployment>(bpmnModel, deploymentId, deploymentBuilder));
+	}
 
   public void deleteDeployment(String deploymentId) {
     commandExecutor.execute(new DeleteDeploymentCmd(deploymentId, false));
