@@ -12,15 +12,22 @@
  */
 package org.activiti.app.service.editor.mapper;
 
+import java.util.List;
+import java.util.Map;
+
+import org.activiti.bpmn.model.ExtensionElement;
 import org.activiti.bpmn.model.ImplementationType;
 import org.activiti.bpmn.model.ServiceTask;
+import org.activiti.editor.constants.StencilConstants;
+import org.activiti.editor.language.json.converter.util.CollectionUtils;
 
 public class ServiceTaskInfoMapper extends AbstractInfoMapper {
 
 	protected void mapProperties(Object element) {
 		ServiceTask serviceTask = (ServiceTask) element;
 		if (ImplementationType.IMPLEMENTATION_TYPE_CLASS.equals(serviceTask.getImplementationType())) {
-			createPropertyNode("Class", serviceTask.getImplementation());
+			// edit by xuWeiJia
+			 createPropertyNode("Class", serviceTask.getImplementation());
 		} else if (ImplementationType.IMPLEMENTATION_TYPE_EXPRESSION.equals(serviceTask.getImplementationType())) {
 			createPropertyNode("Expression", serviceTask.getImplementation());
 		} else if (ImplementationType.IMPLEMENTATION_TYPE_DELEGATEEXPRESSION.equals(serviceTask.getImplementationType())) {
@@ -36,5 +43,12 @@ public class ServiceTaskInfoMapper extends AbstractInfoMapper {
 		createPropertyNode("Result variable name", serviceTask.getResultVariableName());
 		createFieldPropertyNodes("Field extensions", serviceTask.getFieldExtensions());
 		createListenerPropertyNodes("Execution listeners", serviceTask.getExecutionListeners());
+		// add by xuWeiJia
+		Map<String, List<ExtensionElement>> extensionElementMap= serviceTask.getExtensionElements();
+		List<ExtensionElement> formNameElements = extensionElementMap.get(StencilConstants.FORM_NAME);
+		if(CollectionUtils.isNotEmpty(formNameElements)) {
+            ExtensionElement extensionElement = formNameElements.get(0);
+            customCreatePropertyNode("FormKey","formString", extensionElement.getElementText());
+        }
 	}
 }

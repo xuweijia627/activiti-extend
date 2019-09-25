@@ -244,6 +244,8 @@ public interface StencilConstants {
   
   // add by xuWeiJia 2018-11-30
   final String EXPRESSION_DISPLAY = "expressionDisplay";
+  final String RPA_BOUNDARY = "rpaBoundary";
+  final String RPA_AUTO = "rpaAuto";
   final String SLA = "sla";
   final String SPT = "spt";
   final String DATA = "data";

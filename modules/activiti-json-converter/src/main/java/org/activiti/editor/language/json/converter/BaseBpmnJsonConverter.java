@@ -608,6 +608,20 @@ public abstract class BaseBpmnJsonConverter implements EditorJsonConstants, Sten
     ErrorEventDefinition eventDefinition = new ErrorEventDefinition();
     eventDefinition.setErrorCode(errorRef);
     event.getEventDefinitions().add(eventDefinition);
+    
+    
+    // 读取边界rpa配置 add by xuWeiJia
+    JsonNode rpaBoundary = getProperty("rpaboundary", objectNode);
+    if(rpaBoundary instanceof ArrayNode){
+        ArrayNode rpaBoundaryArray= (ArrayNode) rpaBoundary;
+        ExtensionElement rpaBoundaryElement = new ExtensionElement();
+        rpaBoundaryElement.setNamespace(NAMESPACE);
+        rpaBoundaryElement.setNamespacePrefix("modeler");
+        rpaBoundaryElement.setName(RPA_BOUNDARY);
+        rpaBoundaryElement.setElementText(rpaBoundaryArray.toString());
+        event.addExtensionElement(rpaBoundaryElement);
+    }
+    
   }
 
   protected String getValueAsString(String name, JsonNode objectNode) {

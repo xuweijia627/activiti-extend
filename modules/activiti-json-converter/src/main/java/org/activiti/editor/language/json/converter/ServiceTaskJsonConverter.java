@@ -15,6 +15,7 @@ package org.activiti.editor.language.json.converter;
 import java.util.Map;
 
 import org.activiti.bpmn.model.BaseElement;
+import org.activiti.bpmn.model.ExtensionElement;
 import org.activiti.bpmn.model.FieldExtension;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.ImplementationType;
@@ -23,7 +24,9 @@ import org.activiti.editor.language.json.model.ModelInfo;
 import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 
 /**
  * @author Tijs Rademakers
@@ -146,8 +149,38 @@ public class ServiceTaskJsonConverter extends BaseBpmnJsonConverter implements D
         }
       }
     }
+    // 读取独立rpa配置  add by xuWeiJia
+    JsonNode rpaAuto = getProperty("rpaauto", elementNode);
+    if(rpaAuto instanceof ArrayNode) {
+        ArrayNode rpaAutoArray= (ArrayNode) rpaAuto;
+        addExtensionElement(RPA_AUTO, rpaAutoArray.toString(), task);
+    }
+    JsonNode formKeyNode = getProperty(PROPERTY_FORMKEY, elementNode);
+    if(formKeyNode !=null) {
+    	if(formKeyNode.isNull()==false && formKeyNode instanceof ObjectNode) {
+    		JsonNode idNode = formKeyNode.get("id");
+    		if(idNode instanceof TextNode) {
+    			//formKey = idNode.asText();
+    			addExtensionElement("formKey",idNode.asText(),task);
+    		}
+    		// FORM_NAME
+    		JsonNode formNameNode = formKeyNode.get("name");
+    		if(formNameNode!=null && formNameNode.isNull()==false) {
+      		  addExtensionElement(FORM_NAME,formNameNode.asText(),task);
+      	  }
+    	}
+    }
 
     return task;
+  }
+  
+  protected void addExtensionElement(String name, String elementText, ServiceTask task) {
+	    ExtensionElement extensionElement = new ExtensionElement();
+	    extensionElement.setNamespace(NAMESPACE);
+	    extensionElement.setNamespacePrefix("modeler");
+	    extensionElement.setName(name);
+	    extensionElement.setElementText(elementText);
+	    task.addExtensionElement(extensionElement);
   }
 
   protected void setPropertyFieldValue(String name, ServiceTask task, ObjectNode propertiesNode) {
