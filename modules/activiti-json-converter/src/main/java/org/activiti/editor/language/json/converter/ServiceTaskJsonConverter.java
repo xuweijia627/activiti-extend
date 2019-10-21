@@ -170,6 +170,24 @@ public class ServiceTaskJsonConverter extends BaseBpmnJsonConverter implements D
       	  }
     	}
     }
+    
+    // 2019-09-29 add by xuWeiJia 读取节点sla配置
+    JsonNode slaNode = getProperty("slanode", elementNode);
+    if(slaNode instanceof ArrayNode){
+        ArrayNode slaNodeArray= (ArrayNode) slaNode;
+        addExtensionElement(SLA_NODE,slaNodeArray.toString(),task);
+    }
+    
+    // 2019-09-29 add by xuWeiJia 读取spt配置
+    JsonNode sptNode = getProperty("sptnode", elementNode);
+    if(sptNode !=null && sptNode.isNull()==false) {
+    	if(sptNode instanceof ObjectNode) {
+    		addExtensionElement(SPT_NODE,sptNode.toString(),task);
+    	}else if(sptNode instanceof ArrayNode) {
+    		ArrayNode sptNodeArray= (ArrayNode) sptNode;
+            addExtensionElement(SPT_NODE,sptNodeArray.toString(),task);
+    	}
+    }
 
     return task;
   }

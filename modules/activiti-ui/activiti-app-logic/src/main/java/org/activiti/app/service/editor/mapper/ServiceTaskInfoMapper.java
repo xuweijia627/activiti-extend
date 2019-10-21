@@ -27,7 +27,7 @@ public class ServiceTaskInfoMapper extends AbstractInfoMapper {
 		ServiceTask serviceTask = (ServiceTask) element;
 		if (ImplementationType.IMPLEMENTATION_TYPE_CLASS.equals(serviceTask.getImplementationType())) {
 			// edit by xuWeiJia
-			 createPropertyNode("Class", serviceTask.getImplementation());
+			// createPropertyNode("Class", serviceTask.getImplementation());
 		} else if (ImplementationType.IMPLEMENTATION_TYPE_EXPRESSION.equals(serviceTask.getImplementationType())) {
 			createPropertyNode("Expression", serviceTask.getImplementation());
 		} else if (ImplementationType.IMPLEMENTATION_TYPE_DELEGATEEXPRESSION.equals(serviceTask.getImplementationType())) {
