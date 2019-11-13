@@ -23,7 +23,7 @@
 	    <spring.version>4.1.6.RELEASE </spring.version>
 		<spring.security.version>4.0.1.RELEASE</spring.security.version>
 		<hibernate.version>4.2.16.Final</hibernate.version>
-		<jackson.version>2.3.3</jackson.version>
+		<jackson.version>2.10.1</jackson.version>
 		<codahale.metrics.version>3.0.2</codahale.metrics.version>
 		<hazelcastcache.version>3.1.5</hazelcastcache.version>
 		<batik.version>1.7</batik.version>
