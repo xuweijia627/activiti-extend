@@ -15,7 +15,7 @@
     
     	<dependency>
             <groupId>org.activiti</groupId>
-            <artifactId>activiti-app-conf-extension38</artifactId>
+            <artifactId>activiti-app-conf-extension40</artifactId>
             <version>6.0.0</version>
         </dependency>
 

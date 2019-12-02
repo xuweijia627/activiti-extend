@@ -164,48 +164,22 @@ public class StartEventJsonConverter extends BaseBpmnJsonConverter implements Fo
     if(spt instanceof ArrayNode) {
     	addExtensionElement(SPT,spt.toString(),startEvent);
     }
-    /*JsonNode sla = modelNode.get(SLA);
-    if(sla!=null) {
-    	ArrayNode slaData= (ArrayNode) sla.get(DATA);
-    	if(slaData!=null && slaData.size()>0) {
-    		JsonNode defaultSla = getProperty(SLA, modelNode);
-            String id="";
-            if(defaultSla instanceof TextNode){
-                try {
-                    JsonNode jsonNode = objectMapper.readTree(defaultSla.asText());
-                    if(jsonNode!=null){
-                        id=jsonNode.get(EDITOR_STENCIL_ID).asText();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }else if(defaultSla instanceof JsonNode){
-                id=defaultSla.get(EDITOR_STENCIL_ID).asText();
-            }
-            addExtensionElement(SLA,slaData.toString(),id,DEFAULT_SLA,startEvent);
-    	}
+    
+    JsonNode title = getProperty("processtasktitle", modelNode);
+    if(title instanceof TextNode && !title.textValue().equals("") && !title.textValue().equals("null")) {
+    	try {
+    		title = objectMapper.readTree(title.textValue());
+    		if(title instanceof TextNode && !title.textValue().equals("") && !title.textValue().equals("null")) {
+    			title = objectMapper.readTree(title.textValue());
+    		}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
-    JsonNode spt = modelNode.get(SPT);
-    if(spt!=null) {
-    	ArrayNode sptData= (ArrayNode) spt.get(DATA);
-    	if(sptData!=null && sptData.size()>0) {
-    		JsonNode defaultSpt = getProperty(SPT, modelNode);
-            String id="";
-            if(defaultSpt instanceof TextNode){
-                try {
-                    JsonNode jsonNode = objectMapper.readTree(defaultSpt.asText());
-                    if(jsonNode!=null){
-                        id=jsonNode.get(EDITOR_STENCIL_ID).asText();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }else if(defaultSpt instanceof JsonNode){
-                id=defaultSpt.get(EDITOR_STENCIL_ID).asText();
-            }
-            addExtensionElement(SPT,sptData.toString(),id,DEFAULT_SPT,startEvent);
-    	}
-    }*/
+    if(title instanceof ArrayNode) {
+    	addExtensionElement(PROCESS_TITLE, title.toString(), startEvent);
+    }
+   
     // add end
     return startEvent;
   }

@@ -248,6 +248,7 @@ public interface StencilConstants {
   final String RPA_AUTO = "rpaAuto";
   final String SLA = "sla";
   final String SPT = "spt";
+  final String PROCESS_TITLE = "processTitle";
   final String DATA = "data";
   final String SLA_NODE = "slaNode";
   final String SOP_NODE = "sop";
