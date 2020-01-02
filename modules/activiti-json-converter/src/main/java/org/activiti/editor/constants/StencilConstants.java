@@ -258,6 +258,7 @@ public interface StencilConstants {
   final String ROLE_NAMES = "roleNames";
   final String SPT_NODE = "sptNode";
   final String SUBMIT_PATTERN = "submitPattern";
+  final String TASK_ACTIVATE_PATTERN = "taskActivatePattern";
   final String CANDIDATE_POSITION = "candidatePosition";
   final String ASSIGNEE_NAME = "assigneeName";
   final String APPROVAL = "approval";

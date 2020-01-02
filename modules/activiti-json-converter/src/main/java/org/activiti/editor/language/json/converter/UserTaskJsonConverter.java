@@ -481,11 +481,23 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter implements Form
         addExtensionElement(WI_NODE,wiNodeArray.toString(),task);
     }
     
-    // 读提交模式配置   manual: 手工指派，automatic:自动指派，mix: 混合模式
+    // 读提交模式配置   manual: 手工指派，automatic:自动指派，mix: 混合模式         数据格式：{"value":"automatic","name":"自动指派"}
     JsonNode submitPatternNode = getProperty(SUBMIT_PATTERN.toLowerCase(), elementNode);
     if(submitPatternNode !=null && submitPatternNode.isNull()==false && submitPatternNode instanceof ObjectNode) {
-    	addExtensionElement(SUBMIT_PATTERN,submitPatternNode.toString(),task);
+    	JsonNode submitPatternValue = submitPatternNode.get("value");
+  	  	if(submitPatternValue!=null && submitPatternValue.isNull()==false) {
+  	  		addExtensionElement(SUBMIT_PATTERN,submitPatternValue.asText(),task);
+  	  	}
     }
+    // 任务激活模式( 0:领取不激活, 1: 领取并激活)  数据格式: {"value":0,"name":"领取不激活"}
+    JsonNode taskActivatePattern = getProperty(TASK_ACTIVATE_PATTERN.toLowerCase(), elementNode);
+    if(taskActivatePattern !=null && taskActivatePattern.isNull()==false && taskActivatePattern instanceof ObjectNode) {
+    	JsonNode taskActivatePatternValue = taskActivatePattern.get("value");
+  	  	if(taskActivatePatternValue!=null && taskActivatePatternValue.isNull()==false) {
+  	  		addExtensionElement(TASK_ACTIVATE_PATTERN,taskActivatePatternValue.asText(),task);
+  	  	}
+    }
+    
     // 读执行条件
     JsonNode executionCondition = getProperty(EXECUTION_CONDITION, elementNode);
     if(executionCondition !=null && executionCondition.isNull()==false && executionCondition instanceof ArrayNode) {
