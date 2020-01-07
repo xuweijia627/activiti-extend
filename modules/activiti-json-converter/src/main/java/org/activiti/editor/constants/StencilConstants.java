@@ -256,6 +256,9 @@ public interface StencilConstants {
   final String DEFAULT_SLA = "defaultSla";
   final String DEFAULT_SPT = "defaultSpt";
   final String ROLE_NAMES = "roleNames";
+  final String CRITERIA_ROLES = "criteriaRoles";
+  final String CRITERIA_USERS = "criteriaUsers";
+  final String USER_GROUPS = "userGroups";
   final String SPT_NODE = "sptNode";
   final String SUBMIT_PATTERN = "submitPattern";
   final String TASK_ACTIVATE_PATTERN = "taskActivatePattern";

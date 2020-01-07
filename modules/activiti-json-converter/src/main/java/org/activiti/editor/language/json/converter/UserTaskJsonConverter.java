@@ -393,10 +393,35 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter implements Form
           }
           task.setCandidateUsers(getValueAsList(PROPERTY_USERTASK_CANDIDATE_USERS, assignmentDefNode));
           task.setCandidateGroups(getValueAsList(PROPERTY_USERTASK_CANDIDATE_GROUPS, assignmentDefNode));
-       // add by xuWeiJia 取出岗位名称
+          // add by xuWeiJia
+          // 节点权限用户的条件
+          JsonNode userGroupNode = assignmentDefNode.get(USER_GROUPS);
+          if(userGroupNode instanceof ArrayNode) {
+        	  ArrayNode criteriaUser = objectMapper.createArrayNode();
+        	  for (JsonNode valueNode : userGroupNode) {
+        		  if (valueNode.get("value") != null && valueNode.get("value").isNull() == false) {
+        			  JsonNode criteriaList = valueNode.get("criteriaList");
+                      if(criteriaList instanceof ArrayNode) {
+                    	  ObjectNode criteriaNode = objectMapper.createObjectNode();
+                    	  criteriaNode.put("userId", valueNode.get("value").asText());
+                    	  criteriaNode.put("username", valueNode.get("name").asText());
+                    	  ArrayNode criteriaArrayNode = (ArrayNode) criteriaList;
+                    	  criteriaNode.replace("criteriaList", criteriaArrayNode);
+                    	  criteriaUser.add(criteriaNode);
+                      }
+        		  }
+        	  }
+        	  if (criteriaUser.size() > 0) {
+            	  addExtensionElement(CRITERIA_USERS, criteriaUser.toString(), task);
+              }
+          }
+          
+          
+          // 取出岗位名称
           StringBuffer roleNames=new StringBuffer();
           JsonNode valuesNode = assignmentDefNode.get(PROPERTY_USERTASK_CANDIDATE_GROUPS);
           if (valuesNode != null) {
+        	  ArrayNode criteriaRole = objectMapper.createArrayNode();
               for (JsonNode valueNode : valuesNode) {
                   if (valueNode.get("value") != null && valueNode.get("value").isNull() == false) {
                       if(valueNode.get("name") != null && valueNode.get("name").isNull() == false){
@@ -404,11 +429,25 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter implements Form
                     		  roleNames.append(", ");
                     	  }
                           roleNames.append(valueNode.get("name").asText());
+                          
+                          // 取节点权限岗位的条件
+                          JsonNode criteriaList = valueNode.get("criteriaList");
+                          if(criteriaList instanceof ArrayNode) {
+                        	  ObjectNode criteriaNode = objectMapper.createObjectNode();
+                        	  criteriaNode.put("roleId", valueNode.get("value").asText());
+                        	  criteriaNode.put("roleName", valueNode.get("name").asText());
+                        	  ArrayNode criteriaArrayNode = (ArrayNode) criteriaList;
+                        	  criteriaNode.replace("criteriaList", criteriaArrayNode);
+                        	  criteriaRole.add(criteriaNode);
+                          }
                       }
                   }
               }
               if(StringUtils.isNotBlank(roleNames)) {
             	  addExtensionElement(ROLE_NAMES,roleNames.toString(),task);
+              }
+              if (criteriaRole.size() > 0) {
+            	  addExtensionElement(CRITERIA_ROLES, criteriaRole.toString(), task);
               }
           }
           
