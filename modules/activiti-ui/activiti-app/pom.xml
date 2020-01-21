@@ -12,7 +12,7 @@
     <packaging>war</packaging>
 
     <dependencies>
-    
+
     	<dependency>
             <groupId>org.activiti</groupId>
             <artifactId>activiti-app-conf-extension42</artifactId>
