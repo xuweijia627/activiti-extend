@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author Frederik Heremans
  */
-@RestController
+@RestController(value = "apiProcessDefinitionResource")
 @Api(tags = { "Process Definitions" }, description = "Manage Process Definitions", authorizations = { @Authorization(value = "basicAuth") })
 public class ProcessDefinitionResource extends BaseProcessDefinitionResource {
 

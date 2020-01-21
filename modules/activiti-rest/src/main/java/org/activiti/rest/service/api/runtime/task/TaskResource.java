@@ -43,7 +43,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author Frederik Heremans
  */
-@RestController
+@RestController(value = "apiTaskResource")
 @Api(tags = { "Tasks" }, description = "Manage Tasks", authorizations = { @Authorization(value = "basicAuth") })
 public class TaskResource extends TaskBaseResource {
 

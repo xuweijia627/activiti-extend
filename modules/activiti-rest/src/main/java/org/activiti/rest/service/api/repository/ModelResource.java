@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author Frederik Heremans
  */
-@RestController
+@RestController(value = "apiModelResource")
 @Api(tags = { "Models" }, description = "Manage Models", authorizations = { @Authorization(value = "basicAuth") })
 public class ModelResource extends BaseModelResource {
 

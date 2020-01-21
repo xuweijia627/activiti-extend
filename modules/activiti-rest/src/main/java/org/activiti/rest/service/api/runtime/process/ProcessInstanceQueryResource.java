@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author Frederik Heremans
  */
-@RestController
+@RestController(value = "apiProcessInstanceQueryResource")
 @Api(tags = { "Process Instances" }, description = "Manage Process Instances", authorizations = { @Authorization(value = "basicAuth") })
 public class ProcessInstanceQueryResource extends BaseProcessInstanceResource {
 
