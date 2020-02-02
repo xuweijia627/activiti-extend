@@ -4,7 +4,7 @@
 	<artifactId>content-storage-api</artifactId>
 	<parent>
 		<groupId>org.activiti</groupId>
-		<artifactId>activiti-ui-root</artifactId>
+		<artifactId>extension-activiti-ui-root</artifactId>
 		<version>6.0.0</version>
 	</parent>
 	<name>Activiti Content Storage - API</name>

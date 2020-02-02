@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <name>Activiti UI App Root</name>
-  <artifactId>activiti-ui-root</artifactId>
+  <artifactId>extension-activiti-ui-root</artifactId>
   <packaging>pom</packaging>
   
   <parent>
