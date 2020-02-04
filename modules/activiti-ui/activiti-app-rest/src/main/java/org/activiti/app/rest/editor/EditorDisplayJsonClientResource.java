@@ -12,16 +12,14 @@
  */
 package org.activiti.app.rest.editor;
 
+import com.alibaba.fastjson.JSONObject;
 import org.activiti.app.domain.editor.Model;
 import org.activiti.app.domain.editor.ModelHistory;
 import org.activiti.app.service.api.ModelService;
 import org.activiti.app.service.editor.BpmnDisplayJsonConverter;
 import org.activiti.bpmn.model.GraphicInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,7 +35,23 @@ public class EditorDisplayJsonClientResource {
 	protected BpmnDisplayJsonConverter bpmnDisplayJsonConverter;
 	
 	protected ObjectMapper objectMapper = new ObjectMapper();
-	
+
+	/**
+	 * 查看流程图
+	 * @param modelId
+	 * @author xuWeiJia
+	 * @Date 2020-02-04
+	 * @return
+	 */
+	@GetMapping("/rest/model/{modelId}/model-json")
+	public JSONObject getModel(@PathVariable("modelId") String modelId) {
+		ObjectNode displayNode = objectMapper.createObjectNode();
+		Model model = modelService.getModel(modelId);
+		bpmnDisplayJsonConverter.processProcessElements(model, displayNode, new GraphicInfo());
+		JSONObject jsonObject = JSONObject.parseObject(displayNode.toString());
+		return jsonObject;
+	}
+
 	@RequestMapping(value = "/rest/models/{processModelId}/model-json", method = RequestMethod.GET, produces = "application/json")
 	public JsonNode getModelJSON(@PathVariable String processModelId) {
 		ObjectNode displayNode = objectMapper.createObjectNode();
