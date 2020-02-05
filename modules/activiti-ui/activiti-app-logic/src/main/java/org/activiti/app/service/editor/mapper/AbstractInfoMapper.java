@@ -200,7 +200,7 @@ public abstract class AbstractInfoMapper implements InfoMapper {
 	
 	protected ObjectNode parseSubmitPatternNode(String nodeString){
         ObjectNode submitPatternNode = objectMapper.createObjectNode();
-        ObjectNode jsonObject;
+        /*ObjectNode jsonObject;
 		try {
 			jsonObject = (ObjectNode) objectMapper.readTree(nodeString);
 			if(jsonObject != null && jsonObject.size()>0) {
@@ -217,7 +217,8 @@ public abstract class AbstractInfoMapper implements InfoMapper {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
+        submitPatternNode.put("name", nodeString);
         return submitPatternNode;
     }
 	
