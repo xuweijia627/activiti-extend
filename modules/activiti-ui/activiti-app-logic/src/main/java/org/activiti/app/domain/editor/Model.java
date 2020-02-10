@@ -34,6 +34,11 @@ public class Model extends AbstractModel {
 	 */
 	@Column(name = "process_type")
 	protected String processType;
+	
+	@Column(name = "template")
+	protected Boolean template;
+	@Column(name = "template_id")
+	protected String templateId;
 	// add end
 	
 	public Model() {
@@ -80,5 +85,22 @@ public class Model extends AbstractModel {
 		this.processType = processType;
 	}
 
+	public Boolean getTemplate() {
+		return template;
+	}
+
+	public void setTemplate(Boolean template) {
+		this.template = template;
+	}
+
+	public String getTemplateId() {
+		return templateId;
+	}
+
+	public void setTemplateId(String templateId) {
+		this.templateId = templateId;
+	}
+
+	
 	
 }

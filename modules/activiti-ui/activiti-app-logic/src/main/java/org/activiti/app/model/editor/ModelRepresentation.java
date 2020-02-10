@@ -40,6 +40,8 @@ public class ModelRepresentation extends AbstractRepresentation {
   protected Integer modelType;
   protected Long organizationId;
   protected String processType;
+  protected Boolean template;
+  protected String templateId;
 
   public ModelRepresentation(AbstractModel model) {
     initialize(model);
@@ -66,6 +68,8 @@ public class ModelRepresentation extends AbstractRepresentation {
       this.setLatestVersion(true);
       this.setOrganizationId(((Model) model).getOrganizationId());
       this.setProcessType(((Model) model).getProcessType());
+      this.setTemplate(((Model) model).getTemplate());
+      this.setTemplateId(((Model) model).getTemplateId());
     } else if (model instanceof ModelHistory) {
       this.setLatestVersion(false);
     }
@@ -73,6 +77,22 @@ public class ModelRepresentation extends AbstractRepresentation {
 
   
  
+
+public String getTemplateId() {
+	return templateId;
+}
+
+public void setTemplateId(String templateId) {
+	this.templateId = templateId;
+}
+
+public Boolean getTemplate() {
+	return template;
+}
+
+public void setTemplate(Boolean template) {
+	this.template = template;
+}
 
 public String getProcessType() {
 	return processType;
