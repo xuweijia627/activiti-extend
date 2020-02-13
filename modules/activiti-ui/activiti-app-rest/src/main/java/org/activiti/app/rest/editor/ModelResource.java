@@ -12,9 +12,16 @@
  */
 package org.activiti.app.rest.editor;
 
-import java.text.ParseException;
-import java.util.Date;
-
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeType;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
+import com.google.common.collect.Lists;
 import org.activiti.app.domain.editor.Model;
 import org.activiti.app.model.editor.ModelKeyRepresentation;
 import org.activiti.app.model.editor.ModelRepresentation;
@@ -25,29 +32,31 @@ import org.activiti.app.service.exception.BadRequestException;
 import org.activiti.app.service.exception.ConflictingRequestException;
 import org.activiti.app.service.exception.InternalServerErrorException;
 import org.activiti.bpmn.converter.BpmnXMLConverter;
+import org.activiti.editor.constants.EditorJsonConstants;
+import org.activiti.editor.constants.StencilConstants;
 import org.activiti.editor.language.json.converter.BpmnJsonConverter;
+import org.activiti.engine.RepositoryService;
 import org.activiti.engine.identity.User;
+import org.activiti.engine.repository.Deployment;
+import org.activiti.engine.repository.ProcessDefinition;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.List;
 
 @RestController
-public class ModelResource extends AbstractModelResource {
+public class ModelResource extends AbstractModelResource implements StencilConstants, EditorJsonConstants {
 
   private static final Logger log = LoggerFactory.getLogger(ModelResource.class);
 
@@ -63,6 +72,8 @@ public class ModelResource extends AbstractModelResource {
   
   @Autowired
   protected ObjectMapper objectMapper;
+  @Autowired
+  private RepositoryService repositoryService;
 
   protected BpmnJsonConverter bpmnJsonConverter = new BpmnJsonConverter();
 
@@ -133,46 +144,101 @@ public class ModelResource extends AbstractModelResource {
     }
   }
 
+  public static JSONObject conditionExpressionConvert(JSONObject modelObject) {
+    JSONArray childShapes = modelObject.getJSONArray(EditorJsonConstants.EDITOR_CHILD_SHAPES);
+    for (Object childShape : childShapes) {
+      JSONObject child = (JSONObject) childShape;
+      JSONObject properties = child.getJSONObject(EditorJsonConstants.EDITOR_SHAPE_PROPERTIES);
+      JSONObject stencil = child.getJSONObject(EditorJsonConstants.EDITOR_STENCIL);
+      if (stencil != null && stencil.getString(EditorJsonConstants.EDITOR_STENCIL_ID).equals(StencilConstants.STENCIL_SUB_PROCESS)) {
+        conditionExpressionConvert(child);
+      }
+      if (properties != null) {
+        // 条件表达式
+        JSONObject condition = properties.getJSONObject(StencilConstants.PROPERTY_SEQUENCEFLOW_CONDITION);
+        if (condition != null && !condition.isEmpty()) {
+          JSONObject expression = condition.getJSONObject(StencilConstants.PROPERTY_FIELD_EXPRESSION);
+          if (expression != null && !expression.isEmpty()) {
+            String staticValue = expression.getString("staticValue");
+            if (staticValue != null) {
+              condition.put(StencilConstants.PROPERTY_FIELD_EXPRESSION, staticValue);
+            }
+          }
+        }
+      }
+    }
+    return modelObject;
+  }
+
   /**
    * GET /rest/models/{modelId}/editor/json -> get the JSON model
    */
   @RequestMapping(value = "/rest/models/{modelId}/editor/json", method = RequestMethod.GET, produces = "application/json")
-  public ObjectNode getModelJSON(@PathVariable String modelId) {
+  public JSONObject getModelJSON(@PathVariable String modelId) {
     Model model = modelService.getModel(modelId);
-    ObjectNode modelNode = objectMapper.createObjectNode();
+    /*ObjectNode modelNode = objectMapper.createObjectNode();
     modelNode.put("modelId", model.getId());
     modelNode.put("name", model.getName());
     modelNode.put("key", model.getKey());
     modelNode.put("description", model.getDescription());
     modelNode.putPOJO("lastUpdated", model.getLastUpdated());
-    modelNode.put("lastUpdatedBy", model.getLastUpdatedBy());
+    modelNode.put("lastUpdatedBy", model.getLastUpdatedBy());*/
+    JSONObject jsonObject = new JSONObject();
+    jsonObject.put("modelId", model.getId());
+    jsonObject.put("name", model.getName());
+    jsonObject.put("key", model.getKey());
+    jsonObject.put("description", model.getDescription());
+    jsonObject.put("lastUpdated", model.getLastUpdated());
+    jsonObject.put("lastUpdatedBy", model.getLastUpdatedBy());
+    jsonObject.put("organizationId",model.getOrganizationId());
+    jsonObject.put("processType",model.getProcessType());
+    ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionTenantId("brs")
+            .processDefinitionKey(model.getKey()).latestVersion().singleResult();
+    Date deployTime=null;
+    if(processDefinition!=null){
+      Deployment deployment = repositoryService.createDeploymentQuery().deploymentId(processDefinition.getDeploymentId())
+              .singleResult();
+      if(deployment!=null){
+        deployTime=deployment.getDeploymentTime();
+      }
+    }
+    jsonObject.put("deployTime",deployTime);
     if (StringUtils.isNotEmpty(model.getModelEditorJson())) {
       try {
-        ObjectNode editorJsonNode = (ObjectNode) objectMapper.readTree(model.getModelEditorJson());
+        JSONObject modelObject =(JSONObject) JSON.parse(model.getModelEditorJson());
+        /*ObjectNode editorJsonNode = (ObjectNode) objectMapper.readTree(model.getModelEditorJson());
         editorJsonNode.put("modelType", "model");
-        modelNode.put("model", editorJsonNode);
+        modelNode.put("model", editorJsonNode);*/
+        conditionExpressionConvert(modelObject);
+        modelObject.put("modelType", "model");
+        jsonObject.put("model", modelObject);
       } catch (Exception e) {
         log.error("Error reading editor json " + modelId, e);
         throw new InternalServerErrorException("Error reading editor json " + modelId);
       }
 
     } else {
-      ObjectNode editorJsonNode = objectMapper.createObjectNode();
+      /*ObjectNode editorJsonNode = objectMapper.createObjectNode();
       editorJsonNode.put("id", "canvas");
       editorJsonNode.put("resourceId", "canvas");
       ObjectNode stencilSetNode = objectMapper.createObjectNode();
       stencilSetNode.put("namespace", "http://b3mn.org/stencilset/bpmn2.0#");
       editorJsonNode.put("modelType", "model");
-      modelNode.put("model", editorJsonNode);
+      modelNode.put("model", editorJsonNode);*/
+      JSONObject modelObject = new JSONObject();
+      modelObject.put("id", "canvas");
+      modelObject.put("resourceId", "canvas");
+      modelObject.put("modelType", "model");
+      jsonObject.put("model", modelObject);
     }
-    return modelNode;
+    return jsonObject;
   }
 
   /**
    * POST /rest/models/{modelId}/editor/json -> save the JSON model
    */
   @RequestMapping(value = "/rest/models/{modelId}/editor/json", method = RequestMethod.POST)
-  public ModelRepresentation saveModel(@PathVariable String modelId, @RequestBody MultiValueMap<String, String> values) {
+  public Object saveModel(@PathVariable String modelId, @RequestBody MultiValueMap<String, String> values) {
 
     // Validation: see if there was another update in the meantime
     long lastUpdated = -1L;
@@ -213,10 +279,23 @@ public class ModelResource extends AbstractModelResource {
           return updateModel(model, values, true);
         } else {
           // Tried everything, this is really a conflict, return 409
-          ConflictingRequestException exception = new ConflictingRequestException("Process model was updated in the meantime");
+          /*ConflictingRequestException exception = new ConflictingRequestException("Process model was updated in the meantime");
           exception.addCustomData("userFullName", model.getLastUpdatedBy());
           exception.addCustomData("newVersionAllowed", currentUserIsOwner);
-          throw exception;
+          throw exception;*/
+          JSONObject response = new JSONObject();
+          response.put("code", 409);
+          response.put("message", "流程版本冲突");
+          response.put("messageI18nCode", "WORKFLOWAPP_VERSION_CONFLICT");
+          JSONArray data = new JSONArray();
+          JSONObject reason = new JSONObject();
+          reason.put("name", values.getFirst("name"));
+          reason.put("typeName", "process");
+          reason.put("rejectReason", "流程版本冲突,请刷新之后再修改");
+          reason.put("reasonCode", "WORKFLOWAPP_VERSION_CONFLICT_REASON");
+          data.add(reason);
+          response.put("data", data);
+          return response;
         }
       }
 
@@ -261,7 +340,13 @@ public class ModelResource extends AbstractModelResource {
     }
 
     String json = values.getFirst("json_xml");
-
+    try {
+      JsonNode modelNode = objectMapper.readTree(json);
+      modelNode=addCustomProperties(modelNode);
+      json=modelNode.toString();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     try {
       model = modelService.saveModel(model.getId(), name, key, description, json, newVersion, 
           newVersionComment, SecurityUtils.getCurrentUserObject());
@@ -281,4 +366,164 @@ public class ModelResource extends AbstractModelResource {
     Model newModel = modelService.createModel(model, editorJson, SecurityUtils.getCurrentUserObject());
     return new ModelRepresentation(newModel);
   }
+
+  public JsonNode addCustomProperties(JsonNode modelNode) {
+    JsonNode processProperties = modelNode.get(EDITOR_SHAPE_PROPERTIES);
+    JsonNode slaNode = processProperties.get(SLA);
+    if (notBlank(slaNode)) {
+      parseTimeStr(slaNode);
+    }
+    JsonNode sptNode = processProperties.get(SPT);
+    if (notBlank(sptNode)) {
+      parseTimeStr(sptNode);
+    }
+
+    ArrayNode childShapes = (ArrayNode) modelNode.get(EditorJsonConstants.EDITOR_CHILD_SHAPES);
+    // 流程中参与流转条件判断的key
+    List<String> keys = Lists.newArrayList();
+    ObjectNode startNodeProperties = null;
+    for (JsonNode childNode : childShapes) {
+      ObjectNode properties = (ObjectNode) childNode.get(EditorJsonConstants.EDITOR_SHAPE_PROPERTIES);
+      ObjectNode stencil = (ObjectNode) childNode.get(EditorJsonConstants.EDITOR_STENCIL);
+      String elementName = stencil.get(EditorJsonConstants.EDITOR_STENCIL_ID).textValue();
+      if (elementName.equals(StencilConstants.STENCIL_EVENT_START_NONE)) {
+        startNodeProperties = properties;
+      } else if (elementName.equals(StencilConstants.STENCIL_SEQUENCE_FLOW)) {
+        // 条件表达式
+        JsonNode condition = properties.get(StencilConstants.PROPERTY_SEQUENCEFLOW_CONDITION);
+        if (notBlank(condition)) {
+          ObjectNode conditionObj = (ObjectNode) condition;
+          if (conditionObj.get(StencilConstants.PROPERTY_FIELD_EXPRESSION) != null) {
+            ObjectNode expressionNode = objectMapper.createObjectNode();
+            String conditionValue = conditionObj.get(StencilConstants.PROPERTY_FIELD_EXPRESSION).textValue();
+
+            if (StringUtils.isNotBlank(conditionValue)) {
+              ArrayNode conditionArray = (ArrayNode) conditionObj.get("data");
+              for (JsonNode jsonNode : conditionArray) {
+                String value = jsonNode.get("value").asText();
+                String conditionKey = jsonNode.get("key").asText();
+                if (StringUtils.isNotBlank(value) && StringUtils.isNotBlank(conditionKey)) {
+                  keys.add(conditionKey);
+                  String dateFormatStr = dateFormatStr(value);
+                  if (StringUtils.isNotBlank(dateFormatStr)) {
+                    Long time = parseToLong(value, dateFormatStr);
+                    if (time != null) {
+                      String key = jsonNode.get("key").asText();
+                      String symbol = jsonNode.get("symbol").asText();
+                      String oldCondition = key + symbol + value;
+                      String newCondition = key + symbol + time;
+                      conditionValue = conditionValue.replace(oldCondition, newCondition);
+                    }
+                  }
+                }
+              }
+            }
+            expressionNode.put("type", "static");
+            expressionNode.put("staticValue", conditionValue);
+            conditionObj.replace(StencilConstants.PROPERTY_FIELD_EXPRESSION, expressionNode);
+          }
+        }
+      } else if (elementName.equals(StencilConstants.STENCIL_EVENT_BOUNDARY_TIMER)) {
+        properties.put(StencilConstants.PROPERTY_CANCEL_ACTIVITY, true);
+      } else if (elementName.equals(StencilConstants.STENCIL_TASK_SERVICE)){
+        properties.put(StencilConstants.PROPERTY_SERVICETASK_CLASS, "org.activiti.app.rest.delegate.RpaTaskDelegate");
+      } else if (elementName.equals(StencilConstants.STENCIL_SUB_PROCESS)) {
+        addCustomProperties(childNode);
+      }
+    }
+    if (startNodeProperties != null) {
+      startNodeProperties.put("conditionKeys", StringUtils.join(keys, ","));
+    }
+    return modelNode;
+  }
+
+  private boolean notBlank(JsonNode jsonNode){
+    return jsonNode != null
+            && StringUtils.isNotBlank(jsonNode.toString())
+            && !DOUBLE_QUOTES.equals(jsonNode.toString())
+            && !jsonNode.getNodeType().equals(JsonNodeType.NULL);
+  }
+  private Long parseToLong(String value, String dateFormatStr){
+    Long time = null;
+    if (dateFormatStr.equals(TIME_FORMAT)){
+      String[] timeArr = value.split(":");
+      time = Long.valueOf(timeArr[0]) * 60 * 60 + Long.valueOf(timeArr[1]) * 60 + Long.valueOf(timeArr[2]);
+    } else {
+      try {
+        Date date = DateUtils.parseDate(value.trim(), dateFormatStr);
+        time = date.getTime();
+      } catch (ParseException e) {
+        e.printStackTrace();
+      }
+    }
+    return time;
+  }
+  private JsonNode parseTimeStr(JsonNode jsonNode){
+    if (jsonNode instanceof TextNode) {
+      try {
+        jsonNode = this.objectMapper.readTree(jsonNode.asText());
+        if (jsonNode instanceof TextNode) {
+          jsonNode = objectMapper.readTree(jsonNode.asText());
+        }
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+    if (!notBlank(jsonNode)) {
+      return jsonNode;
+    }
+    ArrayNode slaArray = (ArrayNode) jsonNode;
+    for (JsonNode sla : slaArray) {
+      ArrayNode expressionArray = (ArrayNode) sla.get("expression");
+      String conditionValue = sla.get("condition").asText();
+      for (JsonNode expression : expressionArray) {
+        String value = expression.get("value").asText();
+        String dateFormatStr = dateFormatStr(value);
+        if (StringUtils.isNotBlank(dateFormatStr)) {
+          Long time = parseToLong(value, dateFormatStr);
+          if (time != null) {
+            String key = expression.get("key").asText();
+            String symbol = expression.get("symbol").asText();
+            String oldCondition = key + symbol + value;
+            String newCondition = key + symbol + time;
+            conditionValue = conditionValue.replace(oldCondition, newCondition);
+            ((ObjectNode) sla).put("condition", conditionValue);
+          }
+        }
+      }
+    }
+    return jsonNode;
+  }
+
+  private String dateFormatStr(String value){
+    String formatStr = null;
+    if (isDate(value)) {
+      formatStr = DATE_FORMAT;
+    } else if (isDateTime(value)) {
+      formatStr = DATE_TIME_FORMAT;
+    } else if (isTime(value)) {
+      formatStr = TIME_FORMAT;
+    }
+    return formatStr;
+  }
+  public boolean isDate(String value) {
+    return value.matches(DATE_REGEX);
+  }
+  public boolean isDateTime(String value) {
+    return value.matches(DATETIME_REGEX);
+  }
+
+  public boolean isTime(String value) {
+    return value.matches(TIME_REGEX);
+  }
+  public static final String DOUBLE_QUOTES = "\"\"";
+  public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+  public static final String DATE_FORMAT = "yyyy-MM-dd";
+  public static final String TIME_FORMAT = "HH:mm:ss";
+  public static final String DATE_REGEX = "\\d{4}-\\d{2}-\\d{2}";
+  /**
+   * 日期时间类型字符串匹配
+   */
+  public static final String DATETIME_REGEX = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}";
+  public static final String TIME_REGEX = "\\d{2}:\\d{2}:\\d{2}";
 }
