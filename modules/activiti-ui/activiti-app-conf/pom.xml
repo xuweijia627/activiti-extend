@@ -19,12 +19,12 @@
         </dependency>
         <dependency>
             <groupId>org.activiti</groupId>
-            <artifactId>activiti-app-logic-extension40</artifactId>
+            <artifactId>extension-first-activiti-app-logic</artifactId>
             <version>6.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.activiti</groupId>
-            <artifactId>activiti-app-rest-extension27</artifactId>
+            <artifactId>extension-first-activiti-app-rest</artifactId>
             <version>6.0.0</version>
         </dependency>
         <dependency>
@@ -61,7 +61,7 @@
         </dependency>
         <dependency>
             <groupId>org.activiti</groupId>
-            <artifactId>activiti-json-converter-extension27</artifactId>
+            <artifactId>extension-first-activiti-json-converter</artifactId>
             <version>6.0.0</version>
         </dependency>
         <dependency>
