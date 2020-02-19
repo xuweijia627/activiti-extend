@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>extension-first-activiti-app-logic</artifactId>
+	<artifactId>extension-second-activiti-app-logic</artifactId>
 	<parent>
 		<groupId>org.activiti</groupId>
     	<artifactId>extension-activiti-ui-root</artifactId>

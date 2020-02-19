@@ -39,6 +39,8 @@ public class Model extends AbstractModel {
 	protected Boolean template;
 	@Column(name = "template_id")
 	protected String templateId;
+	@Column(name = "copy_from_model_id")
+	protected String copyFromModelId;
 	// add end
 	
 	public Model() {
@@ -101,6 +103,11 @@ public class Model extends AbstractModel {
 		this.templateId = templateId;
 	}
 
-	
-	
+	public String getCopyFromModelId() {
+		return copyFromModelId;
+	}
+
+	public void setCopyFromModelId(String copyFromModelId) {
+		this.copyFromModelId = copyFromModelId;
+	}
 }

@@ -176,13 +176,6 @@ public class ModelResource extends AbstractModelResource implements StencilConst
   @RequestMapping(value = "/rest/models/{modelId}/editor/json", method = RequestMethod.GET, produces = "application/json")
   public JSONObject getModelJSON(@PathVariable String modelId) {
     Model model = modelService.getModel(modelId);
-    /*ObjectNode modelNode = objectMapper.createObjectNode();
-    modelNode.put("modelId", model.getId());
-    modelNode.put("name", model.getName());
-    modelNode.put("key", model.getKey());
-    modelNode.put("description", model.getDescription());
-    modelNode.putPOJO("lastUpdated", model.getLastUpdated());
-    modelNode.put("lastUpdatedBy", model.getLastUpdatedBy());*/
     JSONObject jsonObject = new JSONObject();
     jsonObject.put("modelId", model.getId());
     jsonObject.put("name", model.getName());
@@ -192,6 +185,7 @@ public class ModelResource extends AbstractModelResource implements StencilConst
     jsonObject.put("lastUpdatedBy", model.getLastUpdatedBy());
     jsonObject.put("organizationId",model.getOrganizationId());
     jsonObject.put("processType",model.getProcessType());
+    jsonObject.put("copyFromModelId",model.getCopyFromModelId());
     ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionTenantId("brs")
             .processDefinitionKey(model.getKey()).latestVersion().singleResult();
     Date deployTime=null;
@@ -206,9 +200,6 @@ public class ModelResource extends AbstractModelResource implements StencilConst
     if (StringUtils.isNotEmpty(model.getModelEditorJson())) {
       try {
         JSONObject modelObject =(JSONObject) JSON.parse(model.getModelEditorJson());
-        /*ObjectNode editorJsonNode = (ObjectNode) objectMapper.readTree(model.getModelEditorJson());
-        editorJsonNode.put("modelType", "model");
-        modelNode.put("model", editorJsonNode);*/
         conditionExpressionConvert(modelObject);
         modelObject.put("modelType", "model");
         jsonObject.put("model", modelObject);
@@ -216,15 +207,7 @@ public class ModelResource extends AbstractModelResource implements StencilConst
         log.error("Error reading editor json " + modelId, e);
         throw new InternalServerErrorException("Error reading editor json " + modelId);
       }
-
     } else {
-      /*ObjectNode editorJsonNode = objectMapper.createObjectNode();
-      editorJsonNode.put("id", "canvas");
-      editorJsonNode.put("resourceId", "canvas");
-      ObjectNode stencilSetNode = objectMapper.createObjectNode();
-      stencilSetNode.put("namespace", "http://b3mn.org/stencilset/bpmn2.0#");
-      editorJsonNode.put("modelType", "model");
-      modelNode.put("model", editorJsonNode);*/
       JSONObject modelObject = new JSONObject();
       modelObject.put("id", "canvas");
       modelObject.put("resourceId", "canvas");

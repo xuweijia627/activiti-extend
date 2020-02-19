@@ -45,8 +45,7 @@ public interface ModelService {
   BpmnModel getBpmnModel(AbstractModel model, Map<String, Model> formMap, Map<String, Model> decisionTableMap);
 
   Model createModel(ModelRepresentation model, String editorJson, User createdBy);
-  // add by xuWeiJia
-  Model createModel(ModelRepresentation model, String editorJson, User createdBy,String tenantId);
+
   // add by xuWeiJia
   Model createModel(ModelRepresentation model, String editorJson, User createdBy,String tenantId,Long organizationId,String createdByUserId);
   
