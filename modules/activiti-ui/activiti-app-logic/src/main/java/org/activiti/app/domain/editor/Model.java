@@ -41,6 +41,8 @@ public class Model extends AbstractModel {
 	protected String templateId;
 	@Column(name = "copy_from_model_id")
 	protected String copyFromModelId;
+	@Column(name = "need_copy_form")
+	protected Boolean needCopyForm;
 	// add end
 	
 	public Model() {
@@ -109,5 +111,13 @@ public class Model extends AbstractModel {
 
 	public void setCopyFromModelId(String copyFromModelId) {
 		this.copyFromModelId = copyFromModelId;
+	}
+
+	public Boolean getNeedCopyForm() {
+		return needCopyForm;
+	}
+
+	public void setNeedCopyForm(Boolean needCopyForm) {
+		this.needCopyForm = needCopyForm;
 	}
 }

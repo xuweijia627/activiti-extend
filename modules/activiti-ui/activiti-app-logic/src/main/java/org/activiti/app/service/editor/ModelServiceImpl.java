@@ -222,6 +222,7 @@ public class ModelServiceImpl implements ModelService {
 	  newModel.setTemplate(model.getTemplate());
 	  newModel.setTemplateId(model.getTemplateId());
       newModel.setCopyFromModelId(model.getCopyFromModelId());
+      newModel.setNeedCopyForm(model.getNeedCopyForm());
 	  persistModel(newModel);
 	  return newModel;
   }

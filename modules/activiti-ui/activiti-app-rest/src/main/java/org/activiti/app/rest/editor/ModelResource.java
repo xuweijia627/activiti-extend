@@ -186,6 +186,7 @@ public class ModelResource extends AbstractModelResource implements StencilConst
     jsonObject.put("organizationId",model.getOrganizationId());
     jsonObject.put("processType",model.getProcessType());
     jsonObject.put("copyFromModelId",model.getCopyFromModelId());
+    jsonObject.put("needCopyForm",model.getNeedCopyForm());
     ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionTenantId("brs")
             .processDefinitionKey(model.getKey()).latestVersion().singleResult();
     Date deployTime=null;

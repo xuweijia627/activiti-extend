@@ -12,13 +12,12 @@
  */
 package org.activiti.app.model.editor;
 
-import java.util.Date;
-import java.util.Set;
-
 import org.activiti.app.domain.editor.AbstractModel;
 import org.activiti.app.domain.editor.Model;
 import org.activiti.app.domain.editor.ModelHistory;
 import org.activiti.app.model.common.AbstractRepresentation;
+
+import java.util.Date;
 
 /**
  * Representation of process-models, both current and historic models.
@@ -43,6 +42,7 @@ public class ModelRepresentation extends AbstractRepresentation {
   protected Boolean template;
   protected String templateId;
   protected String copyFromModelId;
+  protected Boolean needCopyForm;
 
   public ModelRepresentation(AbstractModel model) {
     initialize(model);
@@ -72,11 +72,20 @@ public class ModelRepresentation extends AbstractRepresentation {
       this.setTemplate(((Model) model).getTemplate());
       this.setTemplateId(((Model) model).getTemplateId());
       this.setCopyFromModelId(((Model) model).getCopyFromModelId());
+      this.setNeedCopyForm(((Model) model).getNeedCopyForm());
     } else if (model instanceof ModelHistory) {
       this.setLatestVersion(false);
     }
   }
 
+
+  public Boolean getNeedCopyForm() {
+    return needCopyForm;
+  }
+
+  public void setNeedCopyForm(Boolean needCopyForm) {
+    this.needCopyForm = needCopyForm;
+  }
 
   public String getCopyFromModelId() {
     return copyFromModelId;
