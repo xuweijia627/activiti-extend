@@ -28,7 +28,7 @@
         </dependency>
     	<dependency>
             <groupId>org.activiti</groupId>
-            <artifactId>extension-boot1.5.13-second-activiti-app-conf</artifactId>
+            <artifactId>extension-boot1.5.13-fifth-activiti-app-conf</artifactId>
             <version>${activiti.version}</version>
             <exclusions>
                 <exclusion>

@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>extension-boot1.5.13-fourth-activiti-app-conf</artifactId>
+	<artifactId>extension-boot1.5.13-fifth-activiti-app-conf</artifactId>
 	<parent>
 		<groupId>org.activiti</groupId>
     	<artifactId>extension-activiti-ui-root</artifactId>
@@ -24,7 +24,7 @@
         </dependency>
         <dependency>
             <groupId>org.activiti</groupId>
-            <artifactId>extension-fourth-activiti-app-rest</artifactId>
+            <artifactId>extension-fifth-activiti-app-rest</artifactId>
             <version>6.0.0</version>
         </dependency>
         <dependency>

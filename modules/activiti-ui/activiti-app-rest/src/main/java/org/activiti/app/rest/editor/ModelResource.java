@@ -411,7 +411,7 @@ public class ModelResource extends AbstractModelResource implements StencilConst
       } else if (elementName.equals(StencilConstants.STENCIL_EVENT_BOUNDARY_TIMER)) {
         properties.put(StencilConstants.PROPERTY_CANCEL_ACTIVITY, true);
       } else if (elementName.equals(StencilConstants.STENCIL_TASK_SERVICE)){
-        properties.put(StencilConstants.PROPERTY_SERVICETASK_CLASS, "org.activiti.app.rest.delegate.RpaTaskDelegate");
+        properties.put(StencilConstants.PROPERTY_SERVICETASK_CLASS, "com.brs.activiti.service.delegate.RpaTaskDelegate");
       } else if (elementName.equals(StencilConstants.STENCIL_SUB_PROCESS)) {
         addCustomProperties(childNode);
       }
