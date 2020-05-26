@@ -3,9 +3,14 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-
-	<changeSet id="1" author="activiti">
     
+	<changeSet id="1" author="activiti">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="hibernate_sequences"/>
+                <tableExists tableName="ACT_IDM_PERSISTENT_TOKEN"/>
+            </not>
+        </preConditions>
         <!-- Hibernate sequence table -->
         <createTable tableName="hibernate_sequences">
             <column name="sequence_name" type="varchar(255)" />
