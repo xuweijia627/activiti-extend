@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>extension-fifth-activiti-app-rest</artifactId>
+	<artifactId>extension-sixth-activiti-app-rest</artifactId>
 	<parent>
 		<groupId>org.activiti</groupId>
     	<artifactId>extension-activiti-ui-root</artifactId>
@@ -23,7 +23,7 @@
         </dependency>
         <dependency>
             <groupId>org.activiti</groupId>
-            <artifactId>extension-third-activiti-app-logic</artifactId>
+            <artifactId>extension-fourth-activiti-app-logic</artifactId>
             <version>6.0.0</version>
         </dependency>
 
@@ -260,12 +260,12 @@
         <repository>
             <id>maven-releases</id>
             <name>maven-releases</name>
-            <url>http://39.108.142.41:8888/repository/maven-releases/</url>
+            <url>http://8.129.189.172:8888/repository/maven-releases/</url>
         </repository>
         <snapshotRepository>
             <id>maven-snapshots</id>
             <name>maven-snapshots</name>
-            <url>http://39.108.142.41:8888/repository/maven-snapshots/</url>
+            <url>http://8.129.189.172:8888/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 	<!-- BUILD -->
