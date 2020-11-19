@@ -29,18 +29,19 @@ public class Model extends AbstractModel {
     private Long organizationId;
 	@Column(name = "created_by_user_id")
 	private String createdByUserId;
-	/**
-	 * approval :审批    processAudit 流程审核
-	 */
+	/** 流程类型包括两种 approval :审批    processAudit 流程审核 */
 	@Column(name = "process_type")
 	protected String processType;
-	
+	/** 1: 模板流程  0：普通流程*/
 	@Column(name = "template")
 	protected Boolean template;
+	/** 新建流程的时候可以选择一个模板，templateId表示选择的那个模板id*/
 	@Column(name = "template_id")
 	protected String templateId;
+	/** 对每个流程都可以进行复制，copyFromModelId 表示从哪个流程复制过来的*/
 	@Column(name = "copy_from_model_id")
 	protected String copyFromModelId;
+	/** 对每个流程都可以进行复制，needCopyForm表示是否需要复制流程节点上关联的表单*/
 	@Column(name = "need_copy_form")
 	protected Boolean needCopyForm;
 	// add end
