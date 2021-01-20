@@ -29,7 +29,7 @@
   	    <spring.version>4.1.6.RELEASE</spring.version>
   		<spring.security.version>4.0.1.RELEASE</spring.security.version>
   		<hibernate.version>4.2.16.Final</hibernate.version>
-  		<jackson.version>2.3.3</jackson.version>
+  		<jackson.version>2.12.1</jackson.version>
   		<batik.version>1.7</batik.version>
   		<jetty.version>9.1.3.v20140225</jetty.version>
 
